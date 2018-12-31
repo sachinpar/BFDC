@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import 'rxjs/add/operator/map'
-import { User } from '../Models/user.model'
-import { Observable } from 'rxjs';
-import { map } from 'rxjs-compat/operator/map';
+import { Observable, of } from 'rxjs';
+import { map, catchError, tap } from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -15,12 +14,11 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class UserService {
-  users: Observable<User[]>;
+  
   constructor(private http: HttpClient) { }
 
   GetUsers()
   {
-    this.users = this.http.get<User[]>('/api/Users')
-            .pipe(map(res => res.json));
+    return this.http.get('/api/Users').subscribe((response: Response) => console.log(response.json());
   }
 }
