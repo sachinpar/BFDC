@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import 'rxjs/add/operator/map'
-import { Observable, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
+import { IUserResponse } from 'src/Models/IUserResponse';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -19,6 +18,11 @@ export class UserService {
 
   GetUsers()
   {
-    return this.http.get('/api/Users').subscribe((response: Response) => console.log(response.json());
+    return this.http.get<IUserResponse>('/api/Users', httpOptions);
+  }
+
+  GetUser(username : string)
+  {
+    return this.http.get<IUserResponse>('/api/Users/' + username, httpOptions);
   }
 }

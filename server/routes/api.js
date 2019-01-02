@@ -28,11 +28,41 @@ let response = {
     message: null
 };
 
+const getCircularReplacer = () => {
+    const seen = new WeakSet();
+    return (key, value) => {
+      if (typeof value === "object" && value !== null) {
+        if (seen.has(value)) {
+          return;
+        }
+        seen.add(value);
+      }
+      return value;
+    };
+  };
+
 // Get users
 router.get('/Users', (req, res) => {
     connection((db) => {
         db.collection('Users')
             .find()
+            .toArray()
+            .then((users) => {
+                response.data = users;
+                res.json(response);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            });
+    });
+});
+
+// Get user
+router.get('/Users/:username', (req, res) => {
+    var query = { UserName: req.params.username };
+    connection((db) => {
+        db.collection('Users')
+            .find(query)
             .toArray()
             .then((users) => {
                 response.data = users;
