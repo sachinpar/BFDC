@@ -74,4 +74,31 @@ router.get('/Users/:username', (req, res) => {
     });
 });
 
+//Get user
+router.post('/ValidateUser', (req, res) => {
+    var query = { UserName: req.body.username, Password: req.body.password };
+    response.data= [];
+    response.message = "";
+    connection((db) => {
+        db.collection('Users')
+            .find(query)
+            .toArray()
+            .then((users) => {
+                if(users.length > 0){
+                    response.data = users;
+                    response.message = "Authentication successful";
+                }
+                else
+                {
+                    response.status = 401;
+                    response.message = "Invalid Login"
+                }
+                res.json(response);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            });
+    });
+});
+
 module.exports = router;

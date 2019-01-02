@@ -9,6 +9,8 @@ import { IUserResponse } from 'src/Models/IUserResponse';
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
+  public username: string;
+  public password: string;
   public users: Array<User>;
   constructor(private userService: UserService) { }
 
