@@ -85,12 +85,14 @@ router.post('/ValidateUser', (req, res) => {
             .toArray()
             .then((users) => {
                 if(users.length > 0){
+                    response.status = 200;
                     response.data = users;
                     response.message = "Authentication successful";
                 }
                 else
                 {
                     response.status = 401;
+                    response.data = [];
                     response.message = "Invalid Login"
                 }
                 res.json(response);

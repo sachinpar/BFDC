@@ -7,3 +7,8 @@
 .loginInput{
     width: 100%;
 }
+
+#loginSpinner{
+    margin-left: 7vw;
+    margin-top: 2vh;
+}

@@ -25,4 +25,10 @@ export class UserService {
   {
     return this.http.get<IUserResponse>('/api/Users/' + username, httpOptions);
   }
+
+  ValidateLogin(userName : string, pwd: string)
+  {
+    const body = { username: userName, password: pwd };
+    return this.http.post<IUserResponse>('/api/ValidateUser', body, httpOptions);
+  }
 }
