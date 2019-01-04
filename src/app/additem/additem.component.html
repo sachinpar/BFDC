@@ -1,3 +1,37 @@
-<p>
-  additem works!
-</p>
+<form class="globalForm">
+    <mat-card id="addItemCard">
+      <mat-card-title>Add Item</mat-card-title>
+      <mat-card-content>
+        <mat-form-field class="globalInput">
+          <input [(ngModel)]="itemName" matInput placeholder="Item Name" name="itemName">
+        </mat-form-field>
+        <mat-form-field class="globalInput">
+          <input [(ngModel)]="itemQuantity" matInput placeholder="Quantity" name="itemQuantity" type="number">
+        </mat-form-field>
+        <mat-form-field class="globalInput">
+          <input [(ngModel)]="itemSize" matInput placeholder="Size" name="itemsize">
+        </mat-form-field>
+        <mat-form-field class="globalInput">
+          <input [(ngModel)]="itemColor" matInput placeholder="Color" name="itemColor">
+        </mat-form-field>
+        <table>
+          <tr>
+            <td>
+              <input type="file" id="itemImage" (change)="FileSelected($event)" #itemImage/>
+              <button mat-button (click)="itemImage.click()">Upload Image</button>
+            </td>
+            <td>
+              <input type="text" matInput placeholder="No file selected" disabled value={{imageName}}/>
+            </td>
+          </tr>
+        </table>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="AddItem()">Submit</button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-spinner id="loginSpinner"
+        [diameter]="50"
+        *ngIf="showSpinner">
+    </mat-spinner>
+  </form>

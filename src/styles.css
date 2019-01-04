@@ -7,6 +7,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
  margin-left: 10vw;   
 }
 
-#topnav button{
-    background-color: azure;
+#topnav a{
+    background-color: rgb(54, 59, 216);
+    color: white;
+}
+
+.globalInput{
+    width: 100%;
+}
+
+.globalForm{
+    width: 20vw;
+    margin-left: 40vw;
+    margin-top: 20vh;
+}
+
+.mat-button{
+    background-color: rgb(54, 59, 216);
+    color: white;
 }
