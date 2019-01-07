@@ -3,17 +3,23 @@
       <mat-card-title>Add Item</mat-card-title>
       <mat-card-content>
         <mat-form-field class="globalInput">
-          <input [(ngModel)]="itemName" matInput placeholder="Item Name" name="itemName">
+          <input [(ngModel)]="item.name" matInput placeholder="Item Name" name="itemName">
         </mat-form-field>
         <mat-form-field class="globalInput">
-          <input [(ngModel)]="itemQuantity" matInput placeholder="Quantity" name="itemQuantity" type="number">
+          <input [(ngModel)]="item.quantity" matInput placeholder="Quantity" name="itemQuantity" type="number">
         </mat-form-field>
         <mat-form-field class="globalInput">
-          <input [(ngModel)]="itemSize" matInput placeholder="Size" name="itemsize">
+          <input [(ngModel)]="item.size" matInput placeholder="Size" name="itemsize">
         </mat-form-field>
         <mat-form-field class="globalInput">
-          <input [(ngModel)]="itemColor" matInput placeholder="Color" name="itemColor">
+          <input [(ngModel)]="item.color" matInput placeholder="Color" name="itemColor">
         </mat-form-field>
+        <mat-form-field class="globalInput">
+            <input [(ngModel)]="item.price" matInput placeholder="Price" name="itemPrice">
+          </mat-form-field>
+        <mat-form-field class="globalInput">
+            <input [(ngModel)]="item.rent" matInput placeholder="Rent" name="itemRent">
+          </mat-form-field>
         <table>
           <tr>
             <td>

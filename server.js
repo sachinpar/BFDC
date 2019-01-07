@@ -6,6 +6,8 @@ const app = express();
 
 // API file for interacting with MongoDB
 const api = require('./server/routes/api');
+const item = require('./server/routes/item');
+const counter = require('./server/routes/counter');
 
 // Parsers
 app.use(bodyParser.json());
@@ -16,6 +18,8 @@ app.use(express.static(path.join(__dirname, 'dist/BFDC')));
 
 // API location
 app.use('/api', api);
+app.use('/api/items', item);
+app.use('/api/counters', counter);
 
 // Send all other requests to the Angular app
 app.get('*', (req, res) => {
