@@ -1,3 +1,45 @@
-<p>
-  bookitem works!
-</p>
+<form class="bookItemForm">
+    <mat-card id="bookItemCard">
+      <mat-card-title>Place an Order</mat-card-title>
+      <mat-card-content>
+        <mat-form-field class="globalInput">
+            <input matInput placeholder="Product" aria-label="Product" [matAutocomplete]="auto" [formControl]="stateCtrl" required>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="OnProductSelected($event.option.value)">
+              <mat-option *ngFor="let product of filteredProducts | async" [value]="product._id" >
+                <span>{{product.name}}</span> |
+                <small>Size: {{product.size}}</small> |
+                <small>Color: {{product.color}}</small>
+              </mat-option>
+        </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field class="globalInput">
+          <input [(ngModel)]="customerName" matInput placeholder="Customer Name" name="customerName" required>
+        </mat-form-field> 
+        <mat-form-field class="globalInput">
+          <input [(ngModel)]="customerEmail" matInput placeholder="Customer Email" name="customerEmail">
+        </mat-form-field> 
+        <mat-form-field class="globalInput">
+          <input [(ngModel)]="customerMobile" matInput placeholder="Customer Mobile" name="customerMobile">
+        </mat-form-field> 
+        <mat-form-field class="globalInput">
+          <input [(ngModel)]="customerAddress" matInput placeholder="Customer Address" name="customerAddress">
+        </mat-form-field> 
+        <mat-form-field class="globalInput">
+          <input [(ngModel)]="quantity" matInput placeholder="Quantity" name="productQuantity" type="number">
+        </mat-form-field>
+        <mat-form-field class="globalInput">
+            <input [(ngModel)]="rent" matInput placeholder="Rent" name="productRent" type="number">
+        </mat-form-field>
+        <mat-form-field class="globalInput">
+            <input [(ngModel)]="amount" matInput placeholder="Amount" name="amount" type="number" disabled>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="Book()">Submit</button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-spinner id="loginSpinner"
+        [diameter]="50"
+        *ngIf="showSpinner">
+    </mat-spinner>
+  </form>

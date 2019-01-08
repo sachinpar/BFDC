@@ -1,24 +1,24 @@
-<form class="globalForm">
+<form class="itemForm">
     <mat-card id="addItemCard">
       <mat-card-title>Add Item</mat-card-title>
       <mat-card-content>
         <mat-form-field class="globalInput">
-          <input [(ngModel)]="item.name" matInput placeholder="Item Name" name="itemName">
+          <input [(ngModel)]="name" matInput placeholder="Item Name" name="itemName">
         </mat-form-field>
         <mat-form-field class="globalInput">
-          <input [(ngModel)]="item.quantity" matInput placeholder="Quantity" name="itemQuantity" type="number">
+          <input [(ngModel)]="quantity" matInput placeholder="Quantity" name="itemQuantity" type="number">
         </mat-form-field>
         <mat-form-field class="globalInput">
-          <input [(ngModel)]="item.size" matInput placeholder="Size" name="itemsize">
+          <input [(ngModel)]="size" matInput placeholder="Size" name="itemsize">
         </mat-form-field>
         <mat-form-field class="globalInput">
-          <input [(ngModel)]="item.color" matInput placeholder="Color" name="itemColor">
+          <input [(ngModel)]="color" matInput placeholder="Color" name="itemColor">
         </mat-form-field>
         <mat-form-field class="globalInput">
-            <input [(ngModel)]="item.price" matInput placeholder="Price" name="itemPrice">
+            <input [(ngModel)]="price" matInput placeholder="Price" name="itemPrice" type="number">
           </mat-form-field>
         <mat-form-field class="globalInput">
-            <input [(ngModel)]="item.rent" matInput placeholder="Rent" name="itemRent">
+            <input [(ngModel)]="rent" matInput placeholder="Rent" name="itemRent" type="number">
           </mat-form-field>
         <table>
           <tr>

@@ -13,6 +13,12 @@ export class AdditemComponent implements OnInit {
   imageName: string;
   imageFile: File;
   item: Item;
+  name: string;
+  quantity: number;
+  size: string;
+  color: string;
+  price: number;
+  rent: number;
   showSpinner: boolean = false;
 
   constructor(private itemService: ItemService, public snackBar: MatSnackBar, public router: Router) { }
@@ -29,6 +35,16 @@ export class AdditemComponent implements OnInit {
 
   AddItem(){
     this.showSpinner = true;
+    this.item = {
+      _id: 0,
+      name: this.name,
+      quantity: this.quantity,
+      size: this.size,
+      color: this.color,
+      price: this.price,
+      rent: this.rent,
+      image_name: this.imageName
+    };
     this.itemService.AddItem(this.item).subscribe((response) => {
       this.showSpinner = false;
       if(response.status == 200)

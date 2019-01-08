@@ -26,7 +26,7 @@ export class ItemService {
   }
 
   AddItem(item: Item){
-    const body = JSON.stringify(item);
+    const body = {"item": item};
     return this.http.post<IItemResponse>('/api/items/add', body, httpOptions);
   }
 

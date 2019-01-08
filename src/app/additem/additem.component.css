@@ -1,3 +1,9 @@
 #itemImage{
     display: none;
 }
+
+.itemForm{
+    width: 20vw;
+    margin-left: 40vw;
+    margin-top: 10vh;
+}

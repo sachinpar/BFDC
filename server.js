@@ -8,6 +8,8 @@ const app = express();
 const api = require('./server/routes/api');
 const item = require('./server/routes/item');
 const counter = require('./server/routes/counter');
+const booking = require('./server/routes/booking');
+const customer = require('./server/routes/customer');
 
 // Parsers
 app.use(bodyParser.json());
@@ -20,6 +22,8 @@ app.use(express.static(path.join(__dirname, 'dist/BFDC')));
 app.use('/api', api);
 app.use('/api/items', item);
 app.use('/api/counters', counter);
+app.use('/api/bookings', booking);
+app.use('/api/customers', customer);
 
 // Send all other requests to the Angular app
 app.get('*', (req, res) => {
