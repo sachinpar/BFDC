@@ -43,7 +43,8 @@ export class AdditemComponent implements OnInit {
       color: this.color,
       price: this.price,
       rent: this.rent,
-      image_name: this.imageName
+      image_name: this.imageName,
+      quantity_left: this.quantity
     };
     this.itemService.AddItem(this.item).subscribe((response) => {
       this.showSpinner = false;

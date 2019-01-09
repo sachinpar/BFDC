@@ -5,7 +5,7 @@
         <mat-form-field class="globalInput">
             <input matInput placeholder="Product" aria-label="Product" [matAutocomplete]="auto" [formControl]="stateCtrl" required>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="OnProductSelected($event.option.value)">
-              <mat-option *ngFor="let product of filteredProducts | async" [value]="product._id" >
+              <mat-option *ngFor="let product of filteredProducts | async" [value]="product._id" class="MatOption">
                 <span>{{product.name}}</span> |
                 <small>Size: {{product.size}}</small> |
                 <small>Color: {{product.color}}</small>
@@ -19,23 +19,29 @@
           <input [(ngModel)]="customerEmail" matInput placeholder="Customer Email" name="customerEmail">
         </mat-form-field> 
         <mat-form-field class="globalInput">
-          <input [(ngModel)]="customerMobile" matInput placeholder="Customer Mobile" name="customerMobile">
+          <input [(ngModel)]="customerMobile" matInput placeholder="Customer Mobile" name="customerMobile" type="tel">
         </mat-form-field> 
         <mat-form-field class="globalInput">
           <input [(ngModel)]="customerAddress" matInput placeholder="Customer Address" name="customerAddress">
         </mat-form-field> 
         <mat-form-field class="globalInput">
-          <input [(ngModel)]="quantity" matInput placeholder="Quantity" name="productQuantity" type="number">
+          <input [(ngModel)]="quantity" (change)="CalculateAmount()" matInput placeholder="Quantity" name="productQuantity" type="number" [formControl]="quantityFormControl">
+        </mat-form-field>
+        <mat-error *ngIf="quantityFormControl.hasError('max')">
+          Only <strong>{{productQuantity}}</strong> available!
+        </mat-error>
+        <mat-form-field class="globalInput">
+          <input [(ngModel)]="days" (change)="CalculateAmount()" matInput placeholder="Number of days" name="days" type="number">
         </mat-form-field>
         <mat-form-field class="globalInput">
-            <input [(ngModel)]="rent" matInput placeholder="Rent" name="productRent" type="number">
+            <input [(ngModel)]="rent" (change)="CalculateAmount()" matInput placeholder="Rent" name="productRent" type="number">
         </mat-form-field>
         <mat-form-field class="globalInput">
-            <input [(ngModel)]="amount" matInput placeholder="Amount" name="amount" type="number" disabled>
+            <input [(ngModel)]="amount" matInput placeholder="Amount" name="amount" type="number" class="amount" disabled>
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button (click)="Book()">Submit</button>
+        <button mat-button (click)="PlaceOrder()">Submit</button>
       </mat-card-actions>
     </mat-card>
     <mat-spinner id="loginSpinner"

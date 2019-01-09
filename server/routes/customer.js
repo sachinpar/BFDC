@@ -27,7 +27,7 @@ let response = {
     message: null
 };
 
-// Get booking
+// Get customer
 router.get('', (req, res) => {
     connection((db) => {
         db.collection('Customer')
@@ -45,8 +45,9 @@ router.get('', (req, res) => {
     });
 });
 
-// Get item
+// Get customer
 router.get('/:id', (req, res) => {
+    let list = [];
     let query = {
         "_id": Number(req.params.id)
     };
@@ -57,6 +58,11 @@ router.get('/:id', (req, res) => {
                 response.message = "Success";
                 response.status = 200;
                 response.data = items;
+                if(items != null)
+                {
+                    list.push(items);
+                    response.data = list;
+                }
                 res.json(response);
             })
             .catch((err) => {
@@ -65,7 +71,33 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// Add items
+// Get customer by mobile
+router.get('/getbymobile/:mobile', (req, res) => {
+    let list = [];
+    let query = {
+        "mobile": req.params.mobile
+    };
+    connection((db) => {
+        db.collection('Customer')
+            .findOne(query)
+            .then((items) => {
+                response.message = "Success";
+                response.status = 200;
+                response.data = items;
+                if(items != null)
+                {
+                    list.push(items);
+                    response.data = list;
+                }
+                res.json(response);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            });
+    });
+});
+
+// Add customers
 router.post('/add', (req, res) => {
     let customer = req.body.customer;
     connection((db)=>{
@@ -98,7 +130,7 @@ router.post('/add', (req, res) => {
     });
 });
 
-// Delete item
+// Delete customer
 router.delete('/delete/:id', (req, res) => {
     let query = { 
         "_id": Number(req.params.id)
@@ -118,7 +150,7 @@ router.delete('/delete/:id', (req, res) => {
     });
 });
 
-// Update item
+// Update customer
 router.post('/update', (req, res) => {
     let filter = {
         "_id": Number(req.body.customer._id)

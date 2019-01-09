@@ -6,5 +6,6 @@ export interface Item{
     color: string;
     price: number;
     rent: number;
+    quantity_left: number;
     image_name: string;
 }

@@ -5,5 +5,14 @@
 .bookItemForm{
     width: 20vw;
     margin-left: 40vw;
-    margin-top: 10vh;
+    margin-top: 2vh;
+}
+
+.amount{
+    color: darkblue;
+    font-weight: bold;
+}
+
+.error{
+    color: red;
 }

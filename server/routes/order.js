@@ -27,7 +27,7 @@ let response = {
     message: null
 };
 
-// Get booking
+// Get orders
 router.get('', (req, res) => {
     connection((db) => {
         db.collection('Order')
@@ -45,7 +45,7 @@ router.get('', (req, res) => {
     });
 });
 
-// Get item
+// Get order
 router.get('/:id', (req, res) => {
     let query = {
         "_id": Number(req.params.id)
@@ -65,22 +65,18 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// Add items
+// Add order
 router.post('/add', (req, res) => {
     let order = req.body.order;
-    console.log(order);
     connection((db)=>{
         db.collection('Counter')
             .findOne({"_id": "order_id"})
             .then((orders) => {
-                console.log(orders);
                 if(orders == null){
                     orders = {"_id": "order_id", "sequence_value" : 0};
                 }
                 order._id = Number(orders.sequence_value) + 1;
-                console.log("order.id : " + order._id);
                 if(order._id > 0){
-                    console.log("coming here");
                     db.collection('Order')
                         .insertOne(order)
                         .then((resp) => {
@@ -102,7 +98,7 @@ router.post('/add', (req, res) => {
     });
 });
 
-// Delete item
+// Delete order
 router.delete('/delete/:id', (req, res) => {
     let query = { 
         "_id": Number(req.params.id)
@@ -123,13 +119,13 @@ router.delete('/delete/:id', (req, res) => {
     });
 });
 
-// Update item
+// Update order
 router.post('/update', (req, res) => {
     let filter = {
         "_id": Number(req.body.order._id)
     };
     let order = req.body.order;
-    let update = { $set: {item_id: order.item_id, quantity: order.quantity, amount: order.amount}}
+    let update = { $set: {item_id: order.item_id, quantity: order.quantity, days: order.days, amount: order.amount, order_date: order.order_date, returned: order.returned, return_date: order.return_date}}
     let updateOptions = {
         "upsert": "true"
     }

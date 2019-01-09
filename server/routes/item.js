@@ -122,7 +122,7 @@ router.post('/update', (req, res) => {
         "_id": Number(req.body.item._id)
     };
     let item = req.body.item;
-    let update = { $set: {name: item.name, quantity: item.quantity, color: item.color, price: item.price, rent: item.rent}}
+    let update = { $set: {name: item.name, quantity: item.quantity, color: item.color, price: item.price, rent: item.rent, quantity_left: item.quantity_left}}
     let updateOptions = {
         "upsert": "true"
     }
