@@ -31,3 +31,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-size: 11pt;
     font-weight: 500;
 }
+
+.globalSpinner{
+    margin-left: 7vw;
+    margin-top: 2vh;
+}
+
+.listSpinner{
+    margin-left: 47vw;
+    margin-top: 1vh;
+}

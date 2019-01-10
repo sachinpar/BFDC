@@ -1,6 +1,6 @@
 <form class="itemForm">
     <mat-card id="addItemCard">
-      <mat-card-title>Add Item</mat-card-title>
+      <mat-card-title>Add Product</mat-card-title>
       <mat-card-content>
         <mat-form-field class="globalInput">
           <input [(ngModel)]="name" matInput placeholder="Item Name" name="itemName">
@@ -33,7 +33,7 @@
         </table>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button (click)="AddItem()">Submit</button>
+        <button mat-button (click)="AddProduct()">Submit</button>
       </mat-card-actions>
     </mat-card>
     <mat-spinner id="loginSpinner"

@@ -1,5 +1,5 @@
-<form class="bookItemForm">
-    <mat-card id="bookItemCard">
+<form class="placeOrderForm">
+    <mat-card id="placeOrderCard">
       <mat-card-title>Place an Order</mat-card-title>
       <mat-card-content>
         <mat-form-field class="globalInput">
@@ -25,8 +25,11 @@
           <input [(ngModel)]="customerAddress" matInput placeholder="Customer Address" name="customerAddress">
         </mat-form-field> 
         <mat-form-field class="globalInput">
-          <input [(ngModel)]="quantity" (change)="CalculateAmount()" matInput placeholder="Quantity" name="productQuantity" type="number" [formControl]="quantityFormControl">
+          <input (change)="CalculateAmount()" matInput placeholder="Quantity" name="productQuantity" type="number" [formControl]="quantityFormControl">
         </mat-form-field>
+        <div *ngIf="showBadge && !(quantityFormControl.hasError('max'))">
+          {{productQuantity}} in stock
+        </div>
         <mat-error *ngIf="quantityFormControl.hasError('max')">
           Only <strong>{{productQuantity}}</strong> available!
         </mat-error>
@@ -34,7 +37,7 @@
           <input [(ngModel)]="days" (change)="CalculateAmount()" matInput placeholder="Number of days" name="days" type="number">
         </mat-form-field>
         <mat-form-field class="globalInput">
-            <input [(ngModel)]="rent" (change)="CalculateAmount()" matInput placeholder="Rent" name="productRent" type="number">
+            <input [(ngModel)]="rent" (change)="CalculateAmount()" matInput placeholder="Rent" name="productRent" type="number" disabled>
         </mat-form-field>
         <mat-form-field class="globalInput">
             <input [(ngModel)]="amount" matInput placeholder="Amount" name="amount" type="number" class="amount" disabled>

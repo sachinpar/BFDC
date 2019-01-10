@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Item } from 'src/Models/Item';
-import { ItemService } from '../Services/item.service';
+import { Product } from 'src/Models/Product';
+import { ProductService } from '../Services/product.service';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class AdditemComponent implements OnInit {
   imageName: string;
   imageFile: File;
-  item: Item;
+  product: Product;
   name: string;
   quantity: number;
   size: string;
@@ -21,7 +21,7 @@ export class AdditemComponent implements OnInit {
   rent: number;
   showSpinner: boolean = false;
 
-  constructor(private itemService: ItemService, public snackBar: MatSnackBar, public router: Router) { }
+  constructor(private productService: ProductService, public snackBar: MatSnackBar, public router: Router) { }
 
   ngOnInit() {
     this.imageName = "No file selected";
@@ -33,9 +33,9 @@ export class AdditemComponent implements OnInit {
     console.log(this.imageFile);
   }
 
-  AddItem(){
+  AddProduct(){
     this.showSpinner = true;
-    this.item = {
+    this.product = {
       _id: 0,
       name: this.name,
       quantity: this.quantity,
@@ -46,11 +46,11 @@ export class AdditemComponent implements OnInit {
       image_name: this.imageName,
       quantity_left: this.quantity
     };
-    this.itemService.AddItem(this.item).subscribe((response) => {
+    this.productService.AddProduct(this.product).subscribe((response) => {
       this.showSpinner = false;
       if(response.status == 200)
       {
-        this.openSnackBar("Item added", "Close");
+        this.openSnackBar("Product added", "Close");
         this.router.navigateByUrl('home');
       }
       else

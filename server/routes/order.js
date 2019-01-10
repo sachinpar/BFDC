@@ -33,10 +33,10 @@ router.get('', (req, res) => {
         db.collection('Order')
             .find()
             .toArray()
-            .then((items) => {
+            .then((products) => {
                 response.message = "Success";
                 response.status = 200;
-                response.data = items;
+                response.data = products;
                 res.json(response);
             })
             .catch((err) => {
@@ -53,10 +53,10 @@ router.get('/:id', (req, res) => {
     connection((db) => {
         db.collection('Order')
             .findOne(query)
-            .then((items) => {
+            .then((products) => {
                 response.message = "Success";
                 response.status = 200;
-                response.data = items;
+                response.data = products;
                 res.json(response);
             })
             .catch((err) => {
@@ -68,6 +68,17 @@ router.get('/:id', (req, res) => {
 // Add order
 router.post('/add', (req, res) => {
     let order = req.body.order;
+    let filter = {
+        "_id": req.body.order.product_id
+    };
+    let decrement = { 
+        $inc: {
+            "quantity_left": (-1 * order.quantity)
+        }
+    };
+    let updateOptions = {
+        "upsert": "true"
+    }
     connection((db)=>{
         db.collection('Counter')
             .findOne({"_id": "order_id"})
@@ -80,11 +91,7 @@ router.post('/add', (req, res) => {
                     db.collection('Order')
                         .insertOne(order)
                         .then((resp) => {
-                            console.log(resp.insertedCount + " documents inserted successfully");
-                            response.message = resp.insertedCount + " records inserted";
-                            response.data = resp;
-                            res.json(response);
-                            IncrementCounter();
+                            UpdateProductQuantity(filter, decrement, updateOptions, resp, res)
                         })
                         .catch((err) => {
                             sendError(err, res);
@@ -107,7 +114,6 @@ router.delete('/delete/:id', (req, res) => {
         db.collection('Order')
             .remove(query)
             .then((resp) => {
-                //console.log(resp.insertedCount + " documents inserted successfully");
                 response.status = 200;
                 response.message = "Deleted successfully";
                 response.data = resp;
@@ -125,14 +131,14 @@ router.post('/update', (req, res) => {
         "_id": Number(req.body.order._id)
     };
     let order = req.body.order;
-    let update = { $set: {item_id: order.item_id, quantity: order.quantity, days: order.days, amount: order.amount, order_date: order.order_date, returned: order.returned, return_date: order.return_date}}
+    let update = { $set: {product_id: order.product_id, quantity: order.quantity, days: order.days, amount: order.amount, order_date: order.order_date, returned: order.returned, return_date: order.return_date}}
     let updateOptions = {
         "upsert": "true"
     }
     connection((db) => {
         db.collection('Order')
             .updateOne(filter, update, updateOptions)
-            .then((items) => {
+            .then((products) => {
                 response.status = 200;
                 response.data = [];
                 response.message = "Successfully updated";
@@ -142,9 +148,79 @@ router.post('/update', (req, res) => {
                 sendError(err, res);
             });
     });
-})
+});
 
-function IncrementCounter(id){
+router.post('/return', (req, res) => {
+    let order = req.body.order;
+    let filter = {
+        "_id": order.product_id
+    };
+    let update = {
+        $inc: {"quantity_left" : order.quantity}
+    };
+    let updateOptions = {
+        "upsert" : "true"
+    };
+    IncrementProductQuantity(filter, update, updateOptions, res);
+});
+
+function IncrementProductQuantity(filter, increment, updateOptions, res){
+    connection((db)=>{
+        db.collection('Product')
+            .updateOne(filter, increment, updateOptions)
+            .then(() => {
+                UpdateOrderStatus(order, true, new Date(),res);
+            })
+            .catch((err) => {
+                sendError(err);
+            });
+    });
+}
+
+function UpdateOrderStatus(order, status, dateRetuned, res){
+    let filter = {
+        "_id" : order.order_id
+    };
+    let update = {
+        $set: {
+            "returned": status,
+            "return_date": dateRetuned
+        }
+    };
+    let updateOptions = {
+        "upsert": "true"
+    };
+    connection((db) => {
+        db.collection('Order')
+            .updateOne(filter, update, updateOptions)
+            .then(() => {
+                response.status = 200;
+                response.data = [];
+                response.message = "Return successful"
+                res.json(response);
+            })
+            .catch((err) => {
+                sendError(err);
+            });
+    });
+}
+
+function UpdateProductQuantity(filter, decrement, updateOptions, resp, res){
+    connection((db)=>{
+        db.collection('Product')
+            .updateOne(filter, decrement, updateOptions)
+            .then(() => {
+                response.message = resp.insertedCount + " order placed";
+                response.data = resp;
+                IncrementCounter(res);
+            })
+            .catch((err) => {
+                sendError(err);
+            });
+    });
+}
+
+function IncrementCounter(res){
     let filter = {
         "_id": "order_id"
     };
@@ -155,12 +231,13 @@ function IncrementCounter(id){
             };
     let updateOptions = {
         "upsert": "true"
-    }
+    };
     connection((db)=>{
         db.collection('Counter')
             .updateOne(filter, increment, updateOptions)
             .then(() =>{
                 response.status = 200;
+                res.json(response);
             })
             .catch((err) => {
                 sendError(err, res);

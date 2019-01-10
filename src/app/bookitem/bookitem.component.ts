@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { Item } from 'src/Models/Item';
+import { Product } from 'src/Models/Product';
 import {map, startWith} from 'rxjs/operators';
-import { ItemService } from '../Services/item.service';
+import { ProductService } from '../Services/product.service';
 import { Router } from '@angular/router';
 import { OrderService } from '../Services/order.service';
 import { Order } from 'src/Models/Order';
@@ -20,11 +20,11 @@ export class BookitemComponent implements OnInit{
 
   stateCtrl = new FormControl();
   quantityFormControl = new FormControl();
-  filteredProducts: Observable<Item[]>;
-  products: Item[] =[];
+  filteredProducts: Observable<Product[]>;
+  products: Product[] =[];
 
   order: Order;
-  selectedProduct: Item;
+  selectedProduct: Product;
   customerName: string;
   customerEmail: string;
   customerMobile: string;
@@ -37,13 +37,14 @@ export class BookitemComponent implements OnInit{
   showSpinner:boolean = false;
   productQuantity: number;
   invalidQuantity: boolean = false;
+  showBadge: boolean = false;
 
-  constructor(public itemService: ItemService, private orderService: OrderService, private customerService: CustomerService, public snackBar: MatSnackBar, public router: Router) {
+  constructor(public productService: ProductService, private orderService: OrderService, private customerService: CustomerService, public snackBar: MatSnackBar, public router: Router) {
 
   }
 
   ngOnInit() {
-    this.itemService.GetItems().subscribe((response) => {
+    this.productService.GetProducts().subscribe((response) => {
       this.products = response.data;
       this.filteredProducts = this.stateCtrl.valueChanges
         .pipe(
@@ -53,8 +54,7 @@ export class BookitemComponent implements OnInit{
     });
   }
 
-  private _filterProducts(value: string): Item[] {
-    console.log(typeof(value));
+  private _filterProducts(value: string): Product[] {
     if(typeof(value) != "string"){
       value = String(value);
     }
@@ -68,9 +68,10 @@ export class BookitemComponent implements OnInit{
     this.stateCtrl.setValue(this.selectedProduct.name);
     this.rent = this.selectedProduct.rent;
     this.productQuantity = this.selectedProduct.quantity_left;
+    this.showBadge = true;
     this.quantityFormControl.setValidators(Validators.max(this.productQuantity));
-    if(this.quantity != null){
-      this.amount = this.quantity * this.rent;
+    if(this.quantityFormControl.value != null){
+      this.amount = this.quantityFormControl.value * this.selectedProduct.rent * this.days;
     }
   }
 
@@ -120,9 +121,9 @@ export class BookitemComponent implements OnInit{
       this.order = {
         _id: 0,
         customer_id: customer._id,
-        item_id: this.selectedProduct._id,
-        amount: this.days * this.quantity * this.rent,
-        quantity: this.quantity,
+        product_id: this.selectedProduct._id,
+        amount: this.days * this.quantityFormControl.value * this.rent,
+        quantity: this.quantityFormControl.value,
         days: this.days,
         order_date: new Date(),
         returned: false,
@@ -142,20 +143,20 @@ export class BookitemComponent implements OnInit{
   }
 
   ClearInputs(){
-    this.quantity = 0;
+    this.quantityFormControl.reset();
     this.rent = 0;
   }
 
   OnQuantityChanged(){
     this.invalidQuantity = false;
-    if(this.quantity > this.productQuantity){
+    if(this.quantityFormControl.value > this.productQuantity){
       this.invalidQuantity = true;
     }
   }
 
   CalculateAmount(){
-    if(this.quantity != null && this.rent != null && this.days != null){
-      this.amount = this.quantity * this.rent * this.days;
+    if(this.quantityFormControl.value != null && this.rent != null && this.days != null){
+      this.amount = this.quantityFormControl.value * this.rent * this.days;
     }
   }
 

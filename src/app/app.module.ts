@@ -8,13 +8,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { IndexComponent } from './index/index.component';
 import { UserService } from './user.service';
-import { ItemService } from './Services/item.service';
+import { ProductService } from './Services/product.service';
 
-import { MatInputModule, MatCardModule, MatButtonModule, MatSnackBarModule, MatProgressSpinnerModule, MatMenuModule, MatAutocompleteModule, MatSlideToggleModule } from '@angular/material';
+import { MatInputModule, MatCardModule, MatButtonModule, MatSnackBarModule, MatProgressSpinnerModule, MatMenuModule, MatAutocompleteModule, MatSlideToggleModule, MatBadgeModule, MatTableModule } from '@angular/material';
 import { HomeComponent } from './home/home.component';
 import { TopnavComponent } from './topnav/topnav.component';
 import { AdditemComponent } from './additem/additem.component';
 import { BookitemComponent } from './bookitem/bookitem.component';
+import { ListProductsComponent } from './Views/list-products/list-products.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { BookitemComponent } from './bookitem/bookitem.component';
     routingComponents,
     TopnavComponent,
     AdditemComponent,
-    BookitemComponent
+    BookitemComponent,
+    ListProductsComponent
   ],
   imports: [
     BrowserModule,
@@ -39,10 +41,12 @@ import { BookitemComponent } from './bookitem/bookitem.component';
     MatMenuModule,
     MatAutocompleteModule,
     MatSlideToggleModule,
+    MatBadgeModule,
+    MatTableModule,
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [UserService, ItemService],
+  providers: [UserService, ProductService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

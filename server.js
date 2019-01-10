@@ -6,7 +6,7 @@ const app = express();
 
 // API file for interacting with MongoDB
 const api = require('./server/routes/api');
-const item = require('./server/routes/item');
+const product = require('./server/routes/product');
 const counter = require('./server/routes/counter');
 const order = require('./server/routes/order');
 const customer = require('./server/routes/customer');
@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'dist/BFDC')));
 
 // API location
 app.use('/api', api);
-app.use('/api/items', item);
+app.use('/api/products', product);
 app.use('/api/counters', counter);
 app.use('/api/orders', order);
 app.use('/api/customers', customer);

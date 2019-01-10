@@ -1,7 +1,7 @@
 export interface Order{
     _id: number;
     customer_id: number;
-    item_id: number;
+    product_id: number;
     quantity: number;
     days: number;
     amount: number;

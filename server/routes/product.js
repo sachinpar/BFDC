@@ -27,16 +27,16 @@ let response = {
     message: null
 };
 
-// Get items
+// Get products
 router.get('', (req, res) => {
     connection((db) => {
-        db.collection('Item')
+        db.collection('Product')
             .find()
             .toArray()
-            .then((items) => {
+            .then((products) => {
                 response.message = "Success";
                 response.status = 200;
-                response.data = items;
+                response.data = products;
                 res.json(response);
             })
             .catch((err) => {
@@ -45,18 +45,18 @@ router.get('', (req, res) => {
     });
 });
 
-// Get item
+// Get product
 router.get('/:id', (req, res) => {
     let query = {
         "_id": Number(req.params.id)
     };
     connection((db) => {
-        db.collection('Item')
+        db.collection('Product')
             .findOne(query)
-            .then((items) => {
+            .then((products) => {
                 response.message = "Success";
                 response.status = 200;
-                response.data = items;
+                response.data = products;
                 res.json(response);
             })
             .catch((err) => {
@@ -65,17 +65,17 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// Add items
+// Add products
 router.post('/add', (req, res) => {
-    let item = req.body.item;
+    let product = req.body.product;
     connection((db)=>{
         db.collection('Counter')
-            .findOne({"_id": "item_id"})
-            .then((items) => {
-                item._id = Number(items.sequence_value) + 1;
-                if(item._id > 0){
-                    db.collection('Item')
-                        .insertOne(item)
+            .findOne({"_id": "product_id"})
+            .then((products) => {
+                product._id = Number(products.sequence_value) + 1;
+                if(product._id > 0){
+                    db.collection('Product')
+                        .insertOne(product)
                         .then((resp) => {
                             console.log(resp.insertedCount + " documents inserted successfully");
                             response.message = resp.insertedCount + " records inserted";
@@ -95,13 +95,13 @@ router.post('/add', (req, res) => {
     });
 });
 
-// Delete item
+// Delete product
 router.delete('/delete/:id', (req, res) => {
     let query = { 
         "_id": Number(req.params.id)
     };
     connection((db)=>{
-        db.collection('Item')
+        db.collection('Product')
             .remove(query)
             .then((resp) => {
                 //console.log(resp.insertedCount + " documents inserted successfully");
@@ -116,20 +116,20 @@ router.delete('/delete/:id', (req, res) => {
     });
 });
 
-// Update item
+// Update product
 router.post('/update', (req, res) => {
     let filter = {
-        "_id": Number(req.body.item._id)
+        "_id": Number(req.body.product._id)
     };
-    let item = req.body.item;
-    let update = { $set: {name: item.name, quantity: item.quantity, color: item.color, price: item.price, rent: item.rent, quantity_left: item.quantity_left}}
+    let product = req.body.product;
+    let update = { $set: {name: product.name, quantity: product.quantity, color: product.color, price: product.price, rent: product.rent, quantity_left: product.quantity_left}}
     let updateOptions = {
         "upsert": "true"
     }
     connection((db) => {
-        db.collection('Item')
+        db.collection('Product')
             .updateOne(filter, update, updateOptions)
-            .then((items) => {
+            .then((products) => {
                 response.status = 200;
                 response.data = [];
                 response.message = "Successfully updated";
@@ -143,7 +143,7 @@ router.post('/update', (req, res) => {
 
 function IncrementCounter(id){
     let filter = {
-        "_id": "item_id"
+        "_id": "product_id"
     };
     let increment = { 
                 $inc: {
