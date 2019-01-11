@@ -41,3 +41,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     margin-left: 47vw;
     margin-top: 1vh;
 }
+
+.globalTable {
+    margin-top: 5vh;
+    margin-left: 10vw;
+    width: 80vw;
+  }

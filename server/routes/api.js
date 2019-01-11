@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
-const ObjectID = require('mongodb').ObjectID;
 
 // Connect
 const connection = (closure) => {
@@ -72,7 +71,9 @@ router.post('/ValidateUser', (req, res) => {
             .toArray()
             .then((users) => {
                 if(users.length > 0){
+                    let user = users.find(() => true);
                     response.status = 200;
+                    user.token = user.UserName + " " + new Date();
                     response.data = users;
                     response.message = "Authentication successful";
                 }

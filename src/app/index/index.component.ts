@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../user.service';
-import { User } from 'src/Models/user.model';
-import { IUserResponse } from 'src/Models/IUserResponse';
 import { MatSnackBar } from '@angular/material'
 import { Router } from '@angular/router';
+import { AuthService } from '../Services/auth.service';
 
 @Component({
   selector: 'app-index',
@@ -16,14 +14,14 @@ export class IndexComponent implements OnInit {
   public password: string;
   public showSpinner: boolean = false;
 
-  constructor(private userService: UserService, public snackBar: MatSnackBar, public router: Router) { }
+  constructor(private authService: AuthService, public snackBar: MatSnackBar, public router: Router) { }
 
   ngOnInit() {
   }
 
   ValidateLogin(){
     this.showSpinner = true;
-    this.userService.ValidateLogin(this.username, this.password).subscribe((response) => {
+    this.authService.login(this.username, this.password).subscribe((response) => {
       this.showSpinner = false;
       if(response.status == 200)
       {
