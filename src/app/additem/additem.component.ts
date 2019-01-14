@@ -3,6 +3,7 @@ import { Product } from 'src/Models/Product';
 import { ProductService } from '../Services/product.service';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { UploadService } from '../Services/upload.service';
 
 @Component({
   selector: 'app-additem',
@@ -21,7 +22,7 @@ export class AdditemComponent implements OnInit {
   rent: number;
   showSpinner: boolean = false;
 
-  constructor(private productService: ProductService, public snackBar: MatSnackBar, public router: Router) { }
+  constructor(private productService: ProductService, private uploadService: UploadService, public snackBar: MatSnackBar, public router: Router) { }
 
   ngOnInit() {
     this.imageName = "No file selected";
@@ -44,18 +45,23 @@ export class AdditemComponent implements OnInit {
       price: this.price,
       rent: this.rent,
       image_name: this.imageName,
-      quantity_left: this.quantity
+      quantity_left: this.quantity,
     };
-    this.productService.AddProduct(this.product).subscribe((response) => {
-      this.showSpinner = false;
-      if(response.status == 200)
-      {
-        this.openSnackBar("Product added", "Close");
-        this.router.navigateByUrl('home');
-      }
-      else
-      {
-        this.openSnackBar(response.message, "Close");
+    this.uploadService.UploadFile(this.imageFile).subscribe((uploadResponse) => {
+      if(uploadResponse.image_url != null){
+        this.product.image_url = uploadResponse.image_url;
+        this.productService.AddProduct(this.product).subscribe((response) => {
+          this.showSpinner = false;
+          if(response.status == 200)
+          {
+            this.openSnackBar("Product added", "Close");
+            this.router.navigateByUrl('home');
+          }
+          else
+          {
+            this.openSnackBar(response.message, "Close");
+          }
+        });
       }
     });
   }

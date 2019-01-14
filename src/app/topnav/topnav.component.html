@@ -2,5 +2,6 @@
 <a mat-button [routerLink]="[{ outlets: {mainOutlet: 'bookitem'}}]">Place order</a>
 <a mat-button [routerLink]="[{ outlets: {mainOutlet: 'listproducts'}}]">Products</a>
 <a mat-button [routerLink]="[{ outlets: {mainOutlet: 'listorders'}}]">Orders</a>
+<button mat-button (click)="Logout()">Logout</button>
 
 <router-outlet name='mainOutlet'></router-outlet>

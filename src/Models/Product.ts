@@ -8,4 +8,5 @@ export interface Product{
     rent: number;
     quantity_left: number;
     image_name: string;
+    image_url?: string;
 }

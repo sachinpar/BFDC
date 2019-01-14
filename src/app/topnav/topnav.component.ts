@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../Services/auth.service';
 
 @Component({
   selector: 'app-topnav',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class TopnavComponent implements OnInit {
 
-  constructor(public router: Router) { }
+  constructor(public router: Router, private authService: AuthService) { }
 
   ngOnInit() {
   }
@@ -19,5 +20,10 @@ export class TopnavComponent implements OnInit {
 
   BookItem(){
     this.router.navigate([{ outlets: {mainOutlet: 'additem'}}]);
+  }
+
+  Logout(){
+    this.authService.logout();
+    this.router.navigateByUrl('');
   }
 }

@@ -80,6 +80,7 @@ router.post('/add', (req, res) => {
                             console.log(resp.insertedCount + " documents inserted successfully");
                             response.message = resp.insertedCount + " records inserted";
                             response.data = resp;
+                            response.status = 200;
                             res.json(response);
                             IncrementCounter();
                         })

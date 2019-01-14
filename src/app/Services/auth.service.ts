@@ -25,7 +25,7 @@ export class AuthService {
     return this.userService.ValidateLogin(username, password)
         .pipe(
           map(user => {
-            if (user && user.data) {
+            if (user && (user.data.length > 0)) {
                 localStorage.setItem('bfdc_user', JSON.stringify(user.data.find(() => true)));
                 this.currentUserSubject.next(user.data.find(() => true));
             }
