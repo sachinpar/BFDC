@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import 'rxjs/add/operator/map'
-import { IUserResponse } from 'src/Models/IUserResponse';
+import { IUserResponse } from 'src/Models/ResponseModels/IUserResponse';
 
 const httpOptions = {
   headers: new HttpHeaders({

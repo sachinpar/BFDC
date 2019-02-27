@@ -1,0 +1,25 @@
+.cartImg{
+    height: 7vh;
+}
+
+.divCartDivContainer{
+    margin-top: 5vh;
+}
+
+.divCartItems{
+    margin-left: 10vw;
+    width: 80vw;
+}
+
+.cartItemsCard{
+    height: 6vh;
+}
+
+.cartItemGrid{
+    height: 100%;
+}
+
+.customerTable{
+    float: right;
+    margin-right: 9vw;
+}

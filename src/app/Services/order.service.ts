@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import 'rxjs/add/operator/map'
-import { IOrderResponse } from 'src/Models/IOrderResponse';
+import { IOrderResponse } from 'src/Models/ResponseModels/IOrderResponse';
 import { Order } from 'src/Models/Order'
 
 const httpOptions = {

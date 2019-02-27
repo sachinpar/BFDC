@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../Services/auth.service';
+import { CartService } from '../Services/cart.service';
+import { CartProduct } from 'src/Models/CartProduct';
 
 @Component({
   selector: 'app-topnav',
@@ -8,10 +10,14 @@ import { AuthService } from '../Services/auth.service';
   styleUrls: ['./topnav.component.css']
 })
 export class TopnavComponent implements OnInit {
+  cart: CartProduct[];
 
-  constructor(public router: Router, private authService: AuthService) { }
+  constructor(public router: Router, private authService: AuthService, private cartService: CartService) { }
 
   ngOnInit() {
+    this.cartService.cast$.subscribe((cart) =>{
+      this.cart = cart;
+    });
   }
 
   AddItem(){

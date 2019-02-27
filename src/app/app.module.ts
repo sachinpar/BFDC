@@ -10,7 +10,7 @@ import { IndexComponent } from './index/index.component';
 import { UserService } from './user.service';
 import { ProductService } from './Services/product.service';
 
-import { MatInputModule, MatCardModule, MatButtonModule, MatSnackBarModule, MatProgressSpinnerModule, MatMenuModule, MatAutocompleteModule, MatSlideToggleModule, MatBadgeModule, MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
+import { MatInputModule, MatCardModule, MatButtonModule, MatSnackBarModule, MatProgressSpinnerModule, MatMenuModule, MatAutocompleteModule, MatSlideToggleModule, MatBadgeModule, MatTableModule, MatPaginatorModule, MatSortModule, MatGridListModule, MatSelectModule, MatIconModule, MatListModule } from '@angular/material';
 import { HomeComponent } from './home/home.component';
 import { TopnavComponent } from './topnav/topnav.component';
 import { AdditemComponent } from './additem/additem.component';
@@ -19,6 +19,7 @@ import { ListProductsComponent } from './Views/list-products/list-products.compo
 import { ListOrdersComponent } from './Views/list-orders/list-orders.component';
 import { AuthService } from './Services/auth.service';
 import { RequestInterceptor } from './Security/request.interceptor';
+import { ViewCartComponent } from './Views/view-cart/view-cart.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { RequestInterceptor } from './Security/request.interceptor';
     AdditemComponent,
     BookitemComponent,
     ListProductsComponent,
-    ListOrdersComponent
+    ListOrdersComponent,
+    ViewCartComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +51,10 @@ import { RequestInterceptor } from './Security/request.interceptor';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatGridListModule,
+    MatSelectModule,
+    MatIconModule,
+    MatListModule,
     FormsModule,
     ReactiveFormsModule
   ],

@@ -1,3 +1,47 @@
 table {
   width: 100%;
 }
+
+.example-card {
+  max-width: 14.5vw;
+}
+
+.matGridList{
+  margin-left: 5vw;
+  width: 90vw;
+}
+
+#searchInput{
+  margin-left: 7.5vw;
+  width: 50vw;
+}
+
+.divProductSize{
+  border: solid;
+  border-color: gainsboro;
+  border-width: thin;
+  padding: 5%;
+  width: 40%;
+  cursor: pointer;
+}
+
+.divProductSizeSelected{
+  border: solid;
+  border-color: gainsboro;
+  border-width: thin;
+  padding: 5%;
+  width: 40%;
+}
+
+.selectedSizeInput{
+  width: 100%;
+}
+
+.selectedSizeTable{
+  width: 100%;
+  table-layout: fixed;
+}
+
+.gridContainer{
+  height: 70%;
+}

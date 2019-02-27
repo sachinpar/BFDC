@@ -5,12 +5,35 @@
         <mat-form-field class="globalInput">
           <input [(ngModel)]="name" matInput placeholder="Item Name" name="itemName">
         </mat-form-field>
-        <mat-form-field class="globalInput">
-          <input [(ngModel)]="quantity" matInput placeholder="Quantity" name="itemQuantity" type="number">
-        </mat-form-field>
-        <mat-form-field class="globalInput">
-          <input [(ngModel)]="size" matInput placeholder="Size" name="itemsize">
-        </mat-form-field>
+        <mat-grid-list cols="3" rowHeight="6:2" class="sizeAddGrid">
+          <mat-grid-tile>
+            <mat-form-field class="globalInput">
+              <input matInput [formControl]="size" placeholder="Size" name="newItemSize">
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field class="globalInput">
+              <input matInput [formControl]="quantity" placeholder="Quantity" name="newItemQuantity" type="number">
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+              <img src="../../assets/images/add_icon.png" class="removeImage" (click)="AddSize()"/>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <div *ngFor="let size of sizes; let i = index">
+          <mat-grid-list cols="3" rowHeight="6:2">
+            <mat-grid-tile class="sizeListContent">
+              <span>{{size.size}}</span>
+            </mat-grid-tile>
+            <mat-grid-tile class="sizeListContent">
+              <span>{{size.quantity}}</span>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <img id="{{'img_' + i}}" src="../../assets/images/delete_icon.png" class="removeImage" (click)="DeleteSize($event)"/>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <br/>
+        </div>
         <mat-form-field class="globalInput">
           <input [(ngModel)]="color" matInput placeholder="Color" name="itemColor">
         </mat-form-field>
@@ -19,7 +42,7 @@
           </mat-form-field>
         <mat-form-field class="globalInput">
             <input [(ngModel)]="rent" matInput placeholder="Rent" name="itemRent" type="number">
-          </mat-form-field>
+        </mat-form-field>
         <table>
           <tr>
             <td>

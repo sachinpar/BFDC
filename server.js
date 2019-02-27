@@ -11,6 +11,7 @@ const counter = require('./server/routes/counter');
 const order = require('./server/routes/order');
 const customer = require('./server/routes/customer');
 const fileUpload = require('./server/routes/file-upload');
+const size = require('./server/routes/size');
 
 // Parsers
 app.use(bodyParser.json());
@@ -26,6 +27,7 @@ app.use('/api/counters', counter);
 app.use('/api/orders', order);
 app.use('/api/customers', customer);
 app.use('/api/uploads', fileUpload);
+app.use('/api/sizes', size);
 
 // Send all other requests to the Angular app
 app.get('*', (req, res) => {

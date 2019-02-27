@@ -7,3 +7,24 @@
     margin-left: 40vw;
     margin-top: 10vh;
 }
+
+.sizeRow{
+    width: 33%;
+}
+
+.sizeButton{
+    width: 80%;
+}
+
+.removeImage{
+    width: 25%;
+    cursor: pointer;
+}
+
+.sizeListContent{
+    background-color: lavender;
+}
+
+.sizeAddGrid{
+    margin-bottom: 12px;
+}

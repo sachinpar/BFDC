@@ -1,0 +1,49 @@
+<div class="divCartDivContainer">
+  <div class="divCartItems" *ngFor="let item of cart">
+    <mat-card class="example-card cartItemsCard">
+      <mat-card-content style="height:100%">
+          <mat-grid-list class="cartItemGrid" [cols]="4" rowHeight="fit" gutterSize="5px">
+              <mat-grid-tile>
+                <p>
+                  {{item.product_name}}
+                </p>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <p>
+                  {{item.size}}
+                </p>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <p>
+                  {{item.quantity}}
+                </p>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-card-actions>
+                  <button mat-button>Edit</button>
+                  <button mat-button>Remove</button>
+                </mat-card-actions>
+              </mat-grid-tile>
+          </mat-grid-list>
+      </mat-card-content>
+    </mat-card>
+    <br/>
+  </div>
+</div>
+<table class="customerTable">
+  <tr>
+    <td>
+      <mat-form-field class="globalInput">
+          <input matInput placeholder="Customer" aria-label="Customer" [matAutocomplete]="auto" [formControl]="customerCtrl" required>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="OnCustomerSelected($event.option.value)">
+            <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer._id" class="MatOption">
+              <span>{{customer.name}}</span>
+            </mat-option>
+          </mat-autocomplete>
+      </mat-form-field>                       
+    </td>
+    <td>
+      <button mat-button>Place Order</button>
+    </td>
+  </tr>
+</table>

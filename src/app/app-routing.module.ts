@@ -7,6 +7,7 @@ import { BookitemComponent } from './bookitem/bookitem.component';
 import { ListProductsComponent } from './Views/list-products/list-products.component'
 import { ListOrdersComponent } from './Views/list-orders/list-orders.component';
 import { AuthGuard } from './Security/auth.guard';
+import { ViewCartComponent } from './Views/view-cart/view-cart.component';
 
 const routes: Routes = [
   { path: "", component: IndexComponent, pathMatch: 'full' },
@@ -16,7 +17,8 @@ const routes: Routes = [
       { path: 'additem', component: AdditemComponent, outlet: "mainOutlet" },
       { path: 'bookitem', component: BookitemComponent, outlet: "mainOutlet" },
       { path: 'listproducts', component: ListProductsComponent, outlet: "mainOutlet" },
-      { path: 'listorders', component: ListOrdersComponent, outlet: "mainOutlet" }
+      { path: 'listorders', component: ListOrdersComponent, outlet: "mainOutlet" },
+      { path: 'viewcart', component: ViewCartComponent, outlet: "mainOutlet"}
     ],
     canActivate: [AuthGuard]
   }
@@ -27,4 +29,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [IndexComponent, HomeComponent, AdditemComponent, BookitemComponent, ListProductsComponent, ListOrdersComponent];
+export const routingComponents = [IndexComponent, HomeComponent, AdditemComponent, BookitemComponent, ListProductsComponent, ListOrdersComponent, ViewCartComponent];

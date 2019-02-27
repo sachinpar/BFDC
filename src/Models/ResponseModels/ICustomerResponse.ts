@@ -1,4 +1,4 @@
-import { Customer } from './Customer'
+import { Customer } from '../Customer'
 
 export interface ICustomerResponse{
     status: number;

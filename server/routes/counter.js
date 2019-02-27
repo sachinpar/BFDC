@@ -113,4 +113,9 @@ router.put('/increment', (req, res) => {
     });
 });
 
+function Increment(){
+
+}
+
+module.exports.incrementCounter = Increment;
 module.exports = router;

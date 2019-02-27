@@ -1,0 +1,9 @@
+.cartImg{
+    height: 7vh;
+    cursor: pointer;
+}
+
+.cartDiv{
+    float: right;
+    margin-right: 5vw;
+}

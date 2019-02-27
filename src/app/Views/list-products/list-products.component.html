@@ -1,4 +1,4 @@
-<div class="mat-elevation-z8 globalTable">
+<!-- <div class="mat-elevation-z8 globalTable">
   <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
@@ -44,8 +44,67 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div> -->
+
+<mat-form-field class="globalInput" id="searchInput">
+  <input [(ngModel)]="searchText" matInput placeholder="Search Product" name="searchText" (keyup)="OnSearchTextChange()">
+</mat-form-field>
+
+<mat-paginator [length]="length"
+[pageSize]="pageSize"
+[pageSizeOptions]="pageSizeOptions"
+(page)="pageEvent = OnPageChange($event)">
+</mat-paginator>
+<mat-spinner class="listSpinner" 
+    [diameter]="50"
+    *ngIf="showSpinner">
+</mat-spinner>
+<div id="matGridContainer" style="height:70%">
+<mat-grid-list [cols]="breakpoint" style="height:100%" rowHeight="fit" (window:resize)="onResize($event)" class="matGridList" gutterSize="5px">
+  <mat-grid-tile *ngFor="let product of pagedList; let i = index">
+    <div>
+      <mat-card class="example-card">
+        <mat-card-header>
+        </mat-card-header>
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <mat-card-title>{{product.name}}</mat-card-title>
+          <mat-card-subtitle>{{product.color}}</mat-card-subtitle>
+          <mat-grid-list [cols]="3" rowHeight="4:3" matBadgeSize="small" gutterSize="5px">
+            <mat-grid-tile *ngFor="let size of product.sizes">
+              <div class="divProductSize" [id]="'sizeDiv_' + size.product_id + '_' + size.size" matBadge="{{size.quantity_left}}" (click)="AddToSelectedList(size.product_id, size.size, size.quantity_left)">
+                <span>{{size.size}}</span>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <table class="selectedSizeTable">
+            <tr *ngFor="let selectedProduct of GetSelectedSizeListForProduct(product._id)">
+              <td colspan="1">
+                <mat-form-field>
+                  <input matInput disabled [value]="GetSizeValueById(selectedProduct.size_id)" class="selectedSizeInput" placeholder="Size"/>
+                </mat-form-field>
+              </td>
+              <td colspan="3">
+                <mat-form-field class="globalInput">
+                  <input matInput [(ngModel)]="selectedProduct.quantity" [id]="'quantity_' + product._id + '_' + selectedProduct.size_id" placeholder="Quantity" name="newItemSize" type="number" class="selectedSizeInput" (change)="UpdateQtyInSelectedList(product._id, selectedProduct.size_id)">
+                </mat-form-field>
+              </td>
+            </tr>
+          </table>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>Edit</button>
+          <button mat-button>Delete</button>
+          <button mat-button (click)="AddToCart()">Add</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
 </div>
-  <mat-spinner class="listSpinner" 
-      [diameter]="50"
-      *ngIf="showSpinner">
-  </mat-spinner>
+
+<mat-paginator [length]="length"
+[pageSize]="pageSize"
+[pageSizeOptions]="pageSizeOptions"
+(page)="pageEvent = OnPageChange($event)">
+</mat-paginator>

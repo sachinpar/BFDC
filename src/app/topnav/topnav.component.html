@@ -3,5 +3,8 @@
 <a mat-button [routerLink]="[{ outlets: {mainOutlet: 'listproducts'}}]">Products</a>
 <a mat-button [routerLink]="[{ outlets: {mainOutlet: 'listorders'}}]">Orders</a>
 <button mat-button (click)="Logout()">Logout</button>
+<div class="cartDiv" matBadge="{{cart.length}}">
+    <img src="../../assets/images/cart_icon.png" class="cartImg" [routerLink]="[{ outlets: {mainOutlet: 'viewcart'}}]"/>
+</div>
 
 <router-outlet name='mainOutlet'></router-outlet>

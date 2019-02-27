@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
+const counterApi = require('./counter');
 
 // Connect
 const connection = (closure) => {
@@ -68,6 +69,8 @@ router.get('/:id', (req, res) => {
 // Add products
 router.post('/add', (req, res) => {
     let product = req.body.product;
+    let sizes = product.sizes;
+    delete product.sizes;
     connection((db)=>{
         db.collection('Counter')
             .findOne({"_id": "product_id"})
@@ -77,12 +80,10 @@ router.post('/add', (req, res) => {
                     db.collection('Product')
                         .insertOne(product)
                         .then((resp) => {
-                            console.log(resp.insertedCount + " documents inserted successfully");
                             response.message = resp.insertedCount + " records inserted";
                             response.data = resp;
-                            response.status = 200;
-                            res.json(response);
                             IncrementCounter();
+                            AddSizes(sizes, product._id, res);
                         })
                         .catch((err) => {
                             sendError(err, res);
@@ -159,6 +160,67 @@ function IncrementCounter(id){
             .updateOne(filter, increment, updateOptions)
             .then(() =>{
                 response.status = 200;
+            })
+            .catch((err) => {
+                sendError(err, res);
+            });
+    });
+}
+
+function AddSizes(sizes, prod_id, res){
+    var i=0;
+    connection((db) =>{
+        db.collection('Counter')
+            .findOne({"_id": "size_id"})
+            .then((sizeCounter) => {
+                if(sizeCounter == null){
+                    sizeCounter = {"_id": "size_id", "sequence_value" : 0};
+                }
+                let counter = Number(sizeCounter.sequence_value) + 1;
+                for(; i < Object.keys(sizes).length; i++){
+                    sizes[i]._id = counter++;
+                    sizes[i].product_id = prod_id;
+                }
+                AddSizesInDb(sizes, res, i);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            });
+    });
+}
+
+function AddSizesInDb(sizes, res, counter){
+    connection((db) => {
+        db.collection('Sizes')
+            .insert(sizes)
+            .then(() => {
+                response.status = 200;
+                IncrementSizeCounter(res, counter);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            });
+    });
+}
+
+function IncrementSizeCounter(res, counter){
+    let filter = {
+        "_id": "size_id"
+    };
+    let increment = { 
+                $inc: {
+                    "sequence_value": counter
+                }
+            };
+    let updateOptions = {
+        "upsert": "true"
+    }
+    connection((db) => {
+        db.collection('Counter')
+            .updateOne(filter, increment, updateOptions)
+            .then(() => {
+                response.status = 200;
+                res.json(response);
             })
             .catch((err) => {
                 sendError(err, res);

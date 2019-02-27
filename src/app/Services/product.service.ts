@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import 'rxjs/add/operator/map'
-import { IProductResponse } from 'src/Models/IProductResponse';
+import { IProductResponse } from 'src/Models/ResponseModels/IProductResponse';
 import { Product } from 'src/Models/Product'
 
 const httpOptions = {
