@@ -68,14 +68,6 @@ router.get('/:id', (req, res) => {
 // Add order
 router.post('/add', (req, res) => {
     let order = req.body.order;
-    let filter = {
-        "_id": req.body.order.product_id
-    };
-    let decrement = { 
-        $inc: {
-            "quantity_left": (-1 * order.quantity)
-        }
-    };
     let updateOptions = {
         "upsert": "true"
     }
@@ -91,7 +83,17 @@ router.post('/add', (req, res) => {
                     db.collection('Order')
                         .insertOne(order)
                         .then((resp) => {
-                            UpdateProductQuantity(filter, decrement, updateOptions, resp, res)
+                            for(var i = 0; i < order.length;i++){
+                                let filter = {
+                                    "_id": req.body.order[i].product_id
+                                };
+                                let decrement = { 
+                                    $inc: {
+                                        "quantity_left": (-1 * order[i].quantity)
+                                    }
+                                };
+                                UpdateProductQuantity(filter, decrement, updateOptions, resp, res)
+                            }
                         })
                         .catch((err) => {
                             sendError(err, res);

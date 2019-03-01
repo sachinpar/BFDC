@@ -3,8 +3,8 @@ export interface Order{
     customer_id: number;
     product_id: number;
     quantity: number;
-    days: number;
-    amount: number;
+    days?: number;
+    amount?: number;
     order_date: Date;
     returned: boolean;
     return_date: Date;

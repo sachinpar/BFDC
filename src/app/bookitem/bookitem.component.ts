@@ -129,16 +129,16 @@ export class BookitemComponent implements OnInit{
         returned: false,
         return_date: null
       }
-      this.orderService.AddOrder(this.order).subscribe((response) => {
-        if(response.status == 200){
-          this.showSpinner = false;
-          this.openSnackBar("Order placed successfully", "Close");
-          this.router.navigateByUrl('home');
-        }
-        else{
-          this.openSnackBar(response.message, "Close");
-        }
-      });
+      // this.orderService.AddOrder(this.order).subscribe((response) => {
+      //   if(response.status == 200){
+      //     this.showSpinner = false;
+      //     this.openSnackBar("Order placed successfully", "Close");
+      //     this.router.navigateByUrl('home');
+      //   }
+      //   else{
+      //     this.openSnackBar(response.message, "Close");
+      //   }
+      // });
     }
   }
 
