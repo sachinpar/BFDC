@@ -5,6 +5,7 @@ export class CartProduct{
     size_id: number;
     quantity: number;
     product_name?: string;
+    customer_name?: string;
     image_url?: string;
     size?: string;
 }

@@ -4,6 +4,7 @@ import 'rxjs/add/operator/map'
 import { IOrderResponse } from 'src/Models/ResponseModels/IOrderResponse';
 import { Order } from 'src/Models/Order'
 import { CartProduct } from 'src/Models/CartProduct';
+import { IOrderItemResponse } from 'src/Models/ResponseModels/IOrderItemResponse';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -24,6 +25,14 @@ export class OrderService {
 
   GetOrder(id: number){
     return this.http.get<IOrderResponse>('/api/orders/' + id, httpOptions);
+  }
+
+  GetOrderItemsByOrderId(id: number){
+    return this.http.get<IOrderItemResponse>('/api/orders/orderitems/' + id, httpOptions);
+  }
+
+  GetOrderItems(){
+    return this.http.get<IOrderItemResponse>('api/orders/orderitems', httpOptions);
   }
 
   AddOrder(order: CartProduct[]){

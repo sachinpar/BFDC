@@ -121,7 +121,6 @@ export class BookitemComponent implements OnInit{
       this.order = {
         _id: 0,
         customer_id: customer._id,
-        product_id: this.selectedProduct._id,
         amount: this.days * this.quantityFormControl.value * this.rent,
         quantity: this.quantityFormControl.value,
         days: this.days,

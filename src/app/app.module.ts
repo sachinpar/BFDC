@@ -10,7 +10,7 @@ import { IndexComponent } from './index/index.component';
 import { UserService } from './user.service';
 import { ProductService } from './Services/product.service';
 
-import { MatInputModule, MatCardModule, MatButtonModule, MatSnackBarModule, MatProgressSpinnerModule, MatMenuModule, MatAutocompleteModule, MatSlideToggleModule, MatBadgeModule, MatTableModule, MatPaginatorModule, MatSortModule, MatGridListModule, MatSelectModule, MatIconModule, MatListModule } from '@angular/material';
+import { MatInputModule, MatCardModule, MatButtonModule, MatSnackBarModule, MatProgressSpinnerModule, MatMenuModule, MatAutocompleteModule, MatSlideToggleModule, MatBadgeModule, MatTableModule, MatPaginatorModule, MatSortModule, MatGridListModule, MatSelectModule, MatIconModule, MatListModule, MatExpansionModule } from '@angular/material';
 import { HomeComponent } from './home/home.component';
 import { TopnavComponent } from './topnav/topnav.component';
 import { AdditemComponent } from './additem/additem.component';
@@ -55,6 +55,7 @@ import { ViewCartComponent } from './Views/view-cart/view-cart.component';
     MatSelectModule,
     MatIconModule,
     MatListModule,
+    MatExpansionModule,
     FormsModule,
     ReactiveFormsModule
   ],

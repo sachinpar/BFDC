@@ -45,6 +45,24 @@ router.get('', (req, res) => {
     });
 });
 
+// Get order items
+router.get('/orderitems', (req, res) => {
+    connection((db) => {
+        db.collection('OrderItems')
+            .find()
+            .toArray()
+            .then((products) => {
+                response.message = "Success";
+                response.status = 200;
+                response.data = products;
+                res.json(response);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            });
+    });
+});
+
 // Get order
 router.get('/:id', (req, res) => {
     let query = {
@@ -65,45 +83,95 @@ router.get('/:id', (req, res) => {
     });
 });
 
+// Get order items by order id
+router.get('/orderitems/:id', (req, res) => {
+    let query = {
+        "order_id": Number(req.params.id)
+    };
+    connection((db) => {
+        db.collection('OrderItems')
+            .findOne(query)
+            .then((products) => {
+                response.message = "Success";
+                response.status = 200;
+                response.data = products;
+                res.json(response);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            });
+    });
+});
+
 // Add order
 router.post('/add', (req, res) => {
     let order = req.body.order;
     let updateOptions = {
         "upsert": "true"
     }
-    connection((db)=>{
+    connection((db) =>{
         db.collection('Counter')
-            .findOne({"_id": "order_id"})
-            .then((orders) => {
-                if(orders == null){
-                    orders = {"_id": "order_id", "sequence_value" : 0};
+            .find({}).toArray((err, counters) => {
+                let orders_counter = counters.filter((counter) =>{
+                    return counter._id == 'order_id';
+                });
+                if(orders_counter == null || !(orders_counter.length>0)){
+                    orders_counter = [{"_id": "order_id", "sequence_value" : 0}];
                 }
-                order._id = Number(orders.sequence_value) + 1;
-                if(order._id > 0){
-                    db.collection('Order')
-                        .insertOne(order)
-                        .then((resp) => {
-                            for(var i = 0; i < order.length;i++){
-                                let filter = {
-                                    "_id": req.body.order[i].product_id
-                                };
-                                let decrement = { 
-                                    $inc: {
-                                        "quantity_left": (-1 * order[i].quantity)
-                                    }
-                                };
-                                UpdateProductQuantity(filter, decrement, updateOptions, resp, res)
-                            }
-                        })
-                        .catch((err) => {
-                            sendError(err, res);
-                        });
+                let orders_seq_id = Number(orders_counter[0].sequence_value) + 1;
+                if(orders_seq_id > 0){
+                    let order_items_counter = counters.filter((counter) => {
+                        return counter._id == 'order_item_id';
+                    });
+                    if(order_items_counter == null || !(order_items_counter.length>0)){
+                        order_items_counter = [{"_id": "order_item_id", "sequence_value" : 0}];
+                    }
+                    let orders_item_seq_id = Number(order_items_counter[0].sequence_value) + 1;
+                    if(orders_item_seq_id > 0){
+                        var order_date = new Date();
+                        var total_quantity = 0;
+                        let order_items = [];
+                        for(var i = 0; i < order.length;i++){
+                            let order_item = {
+                                "_id": orders_item_seq_id++,
+                                "order_id": orders_seq_id,
+                                "customer_id": order[i].customer_id,
+                                "size_id": order[i].size_id,
+                                "product_id": order[i].product_id,
+                                "product_name": order[i].product_name,
+                                "customer_name": order[i].customer_name,
+                                "size": order[i].size,
+                                "quantity": order[i].quantity,
+                                "order_date": order_date
+                            };
+                            total_quantity += order[i].quantity;
+                            order_items.push(order_item);
+                            let filter = {
+                                "_id": order[i].size_id
+                            };
+                            let decrement = { 
+                                $inc: {
+                                    "quantity_left": (-1 * order[i].quantity)
+                                }
+                            };
+                            UpdateProductQuantity(filter, decrement, updateOptions, res);
+                        }
+                        let order_details = {
+                            "_id": orders_seq_id,
+                            "customer_id": order[0].customer_id,
+                            "customer_name": order[0].customer_name,
+                            "days": 0,
+                            "amount": 0,
+                            "quantity": total_quantity,
+                            "order_date": order_date,
+                            "return_date": null,
+                            "returned": false
+                        };
+                        InsertOrderDetails(res, order_details);
+                        InsertOrderItems(res, order_items, order.length);
+                    }
                 }
-            })
-            .catch((err) => {
-                sendError(err, res);
             });
-        
     });
 });
 
@@ -207,28 +275,25 @@ function UpdateOrderStatus(order, status, dateRetuned, res){
     });
 }
 
-function UpdateProductQuantity(filter, decrement, updateOptions, resp, res){
+function UpdateProductQuantity(filter, decrement, updateOptions, res){
     connection((db)=>{
-        db.collection('Product')
+        db.collection('Sizes')
             .updateOne(filter, decrement, updateOptions)
-            .then(() => {
-                response.message = resp.insertedCount + " order placed";
-                response.data = resp;
-                IncrementCounter(res);
+            .then((resp) => {
             })
             .catch((err) => {
-                sendError(err);
+                sendError(err, res);
             });
     });
 }
 
-function IncrementCounter(res){
+async function IncrementCounter(res, counter_name, inc){
     let filter = {
-        "_id": "order_id"
+        "_id": counter_name
     };
     let increment = { 
                 $inc: {
-                    "sequence_value": 1
+                    "sequence_value": inc
                 }
             };
     let updateOptions = {
@@ -237,11 +302,41 @@ function IncrementCounter(res){
     connection((db)=>{
         db.collection('Counter')
             .updateOne(filter, increment, updateOptions)
-            .then(() =>{
+            .then((resp) =>{
+                
+            })
+            .catch((err) => {
+                sendError(err, res);
+            });
+    });
+}
+
+function InsertOrderItems(res, order_items, len){
+    connection((db) => {
+        db.collection('OrderItems')
+            .insertMany(order_items)
+            .then((resp) => {
                 response.status = 200;
+                response.message = "Order placed successfully";
+                response.data = resp;
+                IncrementCounter(res, "order_item_id", len);
                 res.json(response);
             })
             .catch((err) => {
+                sendError(err, res);
+            });
+    });
+}
+
+function InsertOrderDetails(res, order_details){
+    connection((db) => {
+        db.collection('Order')
+            .insertOne(order_details)
+            .then((resp) => {
+                IncrementCounter(res, "order_id", 1);
+            })
+            .catch((err) => {
+                console.log("error: " + err);
                 sendError(err, res);
             });
     });

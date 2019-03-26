@@ -6,6 +6,7 @@ import { Size } from 'src/Models/Size';
 import { SizeService } from 'src/app/Services/size.service';
 import { CartService } from 'src/app/Services/cart.service';
 import { CartProduct } from 'src/Models/CartProduct';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-products',
@@ -33,7 +34,7 @@ export class ListProductsComponent implements OnInit {
   searchText: string = "";
   selectedQuantity: number = 5;
 
-  constructor(private productService: ProductService, private sizeService: SizeService, private cartService: CartService) { }
+  constructor(private productService: ProductService, private sizeService: SizeService, private cartService: CartService, private router: Router) { }
 
   ngOnInit() {
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 4;
@@ -97,7 +98,7 @@ export class ListProductsComponent implements OnInit {
     if(this.tempProducts.find(s => s.product_id == product_id && s.size == size) != null){
       this.tempProducts.splice(this.tempProducts.findIndex(s => s.product_id == product_id && s.size == size), 1);
       this.UpdateSizeButton(product_id, size, "white", "rgba(0,0,0,.87)");
-      this.UpdateGridHeight(-2);
+      this.UpdateGridHeight(-5);
       return;
     }
 
@@ -105,7 +106,7 @@ export class ListProductsComponent implements OnInit {
     this.UpdateSizeButton(product_id, size, "rgb(54, 59, 216)", "white");
     
     //Increase the height of the grid as we select more sizes
-    this.UpdateGridHeight(2);
+    this.UpdateGridHeight(5);
 
     let sizeObj = this.sizeList.find(s => s.product_id == product_id && s.size == size);
     let prodObj = this.productsList.find(s => s._id == product_id);
@@ -138,6 +139,20 @@ export class ListProductsComponent implements OnInit {
   AddToCart(){
     Array.prototype.push.apply(this.cartProducts, this.tempProducts.slice(this.cartProducts.length, this.tempProducts.length));
     this.cartService.UpdateCart(this.cartProducts);
+  }
+
+  DeleteProduct(product_id){
+    let index = this.productsList.findIndex(s => s._id == product_id);
+    this.productService.DeleteProduct(product_id).subscribe((response) => {
+      if(response.status == 200){
+        this.productsList.splice(index, 1);
+        this.OnSearchTextChange();
+      }
+    });
+  }
+
+  EditProduct(product_id){
+    this.router.navigate(['/home/additem'], { queryParams: { product_id: product_id } });
   }
 
   GetSelectedSizeListForProduct(product_id){

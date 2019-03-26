@@ -59,16 +59,25 @@
     [diameter]="50"
     *ngIf="showSpinner">
 </mat-spinner>
-<div id="matGridContainer" style="height:70%">
+<div id="matGridContainer" style="height:85%">
 <mat-grid-list [cols]="breakpoint" style="height:100%" rowHeight="fit" (window:resize)="onResize($event)" class="matGridList" gutterSize="5px">
   <mat-grid-tile *ngFor="let product of pagedList; let i = index">
     <div>
       <mat-card class="example-card">
         <mat-card-header>
         </mat-card-header>
-        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+        <img class="productImg" mat-card-image [src]="product.image_url" alt="Photo of a Shiba Inu">
         <mat-card-content>
-          <mat-card-title>{{product.name}}</mat-card-title>
+          <table>
+            <tr>
+              <td>
+                <mat-card-title>{{product.name}}</mat-card-title>
+              </td>
+              <td>
+                <img class="editImage" src="../../../assets/images/edit_icon.png" [routerLink]="[{ outlets: {mainOutlet: 'additem'}}]"/>
+              </td>
+            </tr>
+          </table>
           <mat-card-subtitle>{{product.color}}</mat-card-subtitle>
           <mat-grid-list [cols]="3" rowHeight="4:3" matBadgeSize="small" gutterSize="5px">
             <mat-grid-tile *ngFor="let size of product.sizes">
@@ -93,8 +102,7 @@
           </table>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button>Edit</button>
-          <button mat-button>Delete</button>
+          <img class="deleteImage" src="../../../assets/images/delete_icon.png" (click)="DeleteProduct(product._id)"/>
           <button mat-button (click)="AddToCart()">Add</button>
         </mat-card-actions>
       </mat-card>

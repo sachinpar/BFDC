@@ -48,35 +48,35 @@ export class AdditemComponent implements OnInit {
       quantity_left: this.quantity.value,
       sizes: this.sizes
     };
-    this.productService.AddProduct(this.product).subscribe((response) => {
-      this.showSpinner = false;
-      if(response.status == 200)
-      {
-        this.openSnackBar("Product added", "Close");
-        this.router.navigateByUrl('home');
-      }
-      else
-      {
-        this.openSnackBar(response.message, "Close");
-      }
-    });
-    // this.uploadService.UploadFile(this.imageFile).subscribe((uploadResponse) => {
-    //   if(uploadResponse.image_url != null){
-    //     this.product.image_url = uploadResponse.image_url;
-    //     this.productService.AddProduct(this.product).subscribe((response) => {
-    //       this.showSpinner = false;
-    //       if(response.status == 200)
-    //       {
-    //         this.openSnackBar("Product added", "Close");
-    //         this.router.navigateByUrl('home');
-    //       }
-    //       else
-    //       {
-    //         this.openSnackBar(response.message, "Close");
-    //       }
-    //     });
+    // this.productService.AddProduct(this.product).subscribe((response) => {
+    //   this.showSpinner = false;
+    //   if(response.status == 200)
+    //   {
+    //     this.openSnackBar("Product added", "Close");
+    //     this.router.navigateByUrl('home');
+    //   }
+    //   else
+    //   {
+    //     this.openSnackBar(response.message, "Close");
     //   }
     // });
+    this.uploadService.UploadFile(this.imageFile).subscribe((uploadResponse) => {
+      if(uploadResponse.image_url != null){
+        this.product.image_url = uploadResponse.image_url;
+        this.productService.AddProduct(this.product).subscribe((response) => {
+          this.showSpinner = false;
+          if(response.status == 200)
+          {
+            this.openSnackBar("Product added", "Close");
+            this.router.navigateByUrl('home');
+          }
+          else
+          {
+            this.openSnackBar(response.message, "Close");
+          }
+        });
+      }
+    });
   }
 
   AddSize(){

@@ -15,4 +15,9 @@ export class CartService {
   UpdateCart(newCart){
     this.cartSubject.next(newCart);
   }
+
+  ClearCart(){
+    let emptyCart: CartProduct[] = [];
+    this.cartSubject.next(emptyCart);
+  }
 }

@@ -45,3 +45,19 @@ table {
 .gridContainer{
   height: 70%;
 }
+
+.editImage{
+  height: 4vh;
+  float: right;
+  cursor: pointer;
+}
+
+.deleteImage{
+  height: 5vh;
+  cursor: pointer;
+}
+
+.productImg{
+  height: 300px;
+  object-fit: cover;
+}

@@ -8,7 +8,7 @@ import { CustomerService } from 'src/app/Services/customer.service';
 import { startWith, map } from 'rxjs/operators';
 import { Order } from 'src/Models/Order';
 import { OrderService } from 'src/app/Services/order.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
@@ -25,7 +25,7 @@ export class ViewCartComponent implements OnInit {
   existingCustomer: boolean = false;
   customerId: number;
 
-  constructor(private cartService: CartService, private customerService: CustomerService, private orderService: OrderService, public snackBar: MatSnackBar, public router: Router) { }
+  constructor(private cartService: CartService, private customerService: CustomerService, private orderService: OrderService, public snackBar: MatSnackBar, public router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.cartService.cast$.subscribe((cart) =>{
@@ -60,7 +60,7 @@ export class ViewCartComponent implements OnInit {
     this.showSpinner = true;
     let customer: Customer;
     if(this.existingCustomer == true){
-      customer = this.customers.find(s => s.name == this.customerCtrl.value);
+      customer = this.customers.find(s => s._id == this.customerId);
       this.CreateOrder(customer);
     }
     else{
@@ -71,7 +71,10 @@ export class ViewCartComponent implements OnInit {
   AddNewCustomer(): Customer{
     let customer: Customer = {
       _id: 0,
-      name: this.customerCtrl.value
+      name: this.customerCtrl.value,
+      mobile: '',
+      email: '',
+      address: ''
     }
     let newCustomer: Customer;
     this.customerService.AddCustomer(customer).subscribe((response) => {
@@ -88,23 +91,16 @@ export class ViewCartComponent implements OnInit {
   }
 
   CreateOrder(customer: Customer){
+    // this.router.navigate([{ outlets: {mainOutlet: 'listproducts'}}]);
     if(customer != null && customer._id > 0){
+      this.showSpinner=true;
       let i=0;
-      // for(i=0; i<this.cart.length; i++){
-      //   let order: Order;
-      //   order = {
-      //     _id: 0,
-      //     customer_id: customer._id,
-      //     product_id: this.cart[i].product_id,
-      //     quantity: this.cart[i].quantity,
-      //     amount: 0,
-      //     order_date: new Date(),
-      //     returned: false,
-      //     return_date: null
-      //   }
-      // }
+      for(i=0; i<this.cart.length; i++){
+        this.cart[i].customer_id = this.customerId;
+      }
       this.orderService.AddOrder(this.cart).subscribe((response) => {
         if(response.status == 200){
+          this.cartService.ClearCart();
           this.showSpinner = false;
           this.openSnackBar("Order placed successfully", "Close");
           this.router.navigateByUrl('home');

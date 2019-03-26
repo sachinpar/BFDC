@@ -1,5 +1,5 @@
-<div class="mat-elevation-z8 globalTable">
-  <table mat-table [dataSource]="dataSource" matSort>
+<div class="mat-elevation-z8 globalTable" *ngFor="let order of ordersList">
+  <!-- <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="_id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
         <td mat-cell *matCellDef="let order"> {{order._id}} </td>
@@ -55,9 +55,43 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{order.customer_id}}
+          </mat-panel-title>
+          <mat-panel-description>
+            Total items: {{order.quantity}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+            Order Date: {{order.order_date}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            Returned: {{order.returned}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            <span *ngIf="order.returned">Return Date: {{order.return_date}}</span>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+    
+        <mat-card class="orderItem" *ngFor="let order_item of GetOrderItems(order._id)">
+          <mat-card-content>
+            <table>
+              <tr>
+                <td>
+                  {{order_item.product_name}}
+                </td>
+                <td>
+                  Size: {{order_item.size}}
+                </td>
+                <td>
+                  Quantity: {{order_item.quantity}}
+                </td>
+              </tr>
+            </table>
+          </mat-card-content>
+        </mat-card>
+          
+      </mat-expansion-panel>
+    </mat-accordion>
 </div>
-  <mat-spinner class="listSpinner" 
-      [diameter]="50"
-      *ngIf="showSpinner">
-  </mat-spinner>
+<mat-spinner class="listSpinner" 
+    [diameter]="50"
+    *ngIf="showSpinner">
+</mat-spinner>
