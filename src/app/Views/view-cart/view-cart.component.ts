@@ -96,7 +96,8 @@ export class ViewCartComponent implements OnInit {
       this.showSpinner=true;
       let i=0;
       for(i=0; i<this.cart.length; i++){
-        this.cart[i].customer_id = this.customerId;
+        this.cart[i].customer_id = customer._id;
+        this.cart[i].customer_name = customer.name;
       }
       this.orderService.AddOrder(this.cart).subscribe((response) => {
         if(response.status == 200){

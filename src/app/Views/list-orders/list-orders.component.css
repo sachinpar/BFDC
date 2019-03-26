@@ -10,3 +10,17 @@ table{
   margin-bottom: 10px;
   background-color: #f1f3f6;
 }
+
+.orderItemImg{
+  height: 10vh;
+  width: 5vw;
+  object-fit: cover;
+}
+
+.orderItemImgTd{
+  width: 6vw;
+}
+
+.orderItemNameTd{
+  font-weight: 600;
+}

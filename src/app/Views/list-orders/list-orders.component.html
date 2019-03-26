@@ -60,7 +60,7 @@
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            {{order.customer_id}}
+            {{order.customer_name}}
           </mat-panel-title>
           <mat-panel-description>
             Total items: {{order.quantity}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
@@ -74,7 +74,10 @@
           <mat-card-content>
             <table>
               <tr>
-                <td>
+                <td class="orderItemImgTd">
+                  <img [src]="GetImageUrl(order_item.product_id)" class="orderItemImg"/>
+                </td>
+                <td class="orderItemNameTd">
                   {{order_item.product_name}}
                 </td>
                 <td>
