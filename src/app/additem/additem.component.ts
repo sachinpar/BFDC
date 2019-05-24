@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { UploadService } from '../Services/upload.service';
 import { Size } from 'src/Models/Size';
 import { FormControl, Validators } from '@angular/forms';
+import { SizeService } from '../Services/size.service';
 
 @Component({
   selector: 'app-additem',
@@ -24,6 +25,7 @@ export class AdditemComponent implements OnInit {
   rent: number;
   showSpinner: boolean = false;
   sizes: Size[] = [];
+  noSizes: boolean = false;
 
   constructor(private productService: ProductService, private uploadService: UploadService, public snackBar: MatSnackBar, public router: Router) { }
 
@@ -37,6 +39,10 @@ export class AdditemComponent implements OnInit {
   }
 
   AddProduct(){
+    if(this.sizes == null || this.sizes.length <= 0){
+      this.noSizes = true;
+      return;
+    }
     this.showSpinner = true;
     this.product = {
       _id: 0,

@@ -20,6 +20,7 @@
               <img src="../../assets/images/add_icon.png" class="removeImage" (click)="AddSize()"/>
           </mat-grid-tile>
         </mat-grid-list>
+        <div *ngIf="noSizes">Please add a size</div>
         <div *ngFor="let size of sizes; let i = index">
           <mat-grid-list cols="3" rowHeight="6:2">
             <mat-grid-tile class="sizeListContent">
