@@ -74,11 +74,11 @@ router.post('/add', (req, res) => {
     connection((db)=>{
         db.collection('Counter')
             .findOne({"_id": "product_id"})
-            .then((products) => {
-                if(products == null || !(products.length>0)){
-                    products = {"_id": "product_id", "sequence_value" : 0};
+            .then((product_counter) => {
+                if(product_counter == null){
+                    product_counter = {"_id": "product_id", "sequence_value" : 0};
                 }
-                product._id = Number(products.sequence_value) + 1;
+                product._id = Number(product_counter.sequence_value) + 1;
                 if(product._id > 0){
                     db.collection('Product')
                         .insertOne(product)

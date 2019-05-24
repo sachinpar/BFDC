@@ -47,7 +47,7 @@ table {
 }
 
 .editImage{
-  height: 4vh;
+  height: 1.3vh;
   float: right;
   cursor: pointer;
 }
@@ -58,6 +58,6 @@ table {
 }
 
 .productImg{
-  height: 300px;
+  height: 35vh;
   object-fit: cover;
 }

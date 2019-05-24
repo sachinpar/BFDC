@@ -59,11 +59,11 @@
     [diameter]="50"
     *ngIf="showSpinner">
 </mat-spinner>
-<div id="matGridContainer" style="height:85%">
+<div id="matGridContainer" [style.height.%]="gridHeight">
 <mat-grid-list [cols]="breakpoint" style="height:100%" rowHeight="fit" (window:resize)="onResize($event)" class="matGridList" gutterSize="5px">
   <mat-grid-tile *ngFor="let product of pagedList; let i = index">
     <div>
-      <mat-card class="example-card">
+      <mat-card class="example-card" [style.minHeight]="'100%'" [style.minWidth]="'100%'" [style.maxHeight]="'60%'">
         <mat-card-header>
         </mat-card-header>
         <img class="productImg" mat-card-image [src]="product.image_url" alt="Photo of a Shiba Inu">
@@ -71,7 +71,7 @@
           <table>
             <tr>
               <td>
-                <mat-card-title>{{product.name}}</mat-card-title>
+                <mat-card-title style="font-size: 2.5vh">{{product.name}}</mat-card-title>
               </td>
               <td>
                 <img class="editImage" src="../../../assets/images/edit_icon.png" [routerLink]="[{ outlets: {mainOutlet: 'additem'}}]"/>
@@ -86,6 +86,11 @@
               </div>
             </mat-grid-tile>
           </mat-grid-list>
+          
+          <!-- <div class="divProductSize" *ngFor="let size of product.sizes" [id]="'sizeDiv_' + size.product_id + '_' + size.size" matBadgeSize="small" matBadge="{{size.quantity_left}}" (click)="AddToSelectedList(size.product_id, size.size, size.quantity_left)">
+            <span>{{size.size}}</span>
+          </div> -->
+
           <table class="selectedSizeTable">
             <tr *ngFor="let selectedProduct of GetSelectedSizeListForProduct(product._id)">
               <td colspan="1">

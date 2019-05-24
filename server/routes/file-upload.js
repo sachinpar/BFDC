@@ -6,7 +6,12 @@ const singleUpload = upload.single('image');
 
 router.post('/upload', (req, res) => {
     singleUpload(req, res, (err) => {
-        res.json({'image_url': req.file.location});
+        if(req.file != null){
+            res.json({'image_url': req.file.location});
+        }
+        else{
+            res.json({'image_url': ''});
+        }
     });
 });
 

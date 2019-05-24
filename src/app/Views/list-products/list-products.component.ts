@@ -33,6 +33,7 @@ export class ListProductsComponent implements OnInit {
   showSpinner: boolean = true;
   searchText: string = "";
   selectedQuantity: number = 5;
+  gridHeight: number = 85;
 
   constructor(private productService: ProductService, private sizeService: SizeService, private cartService: CartService, private router: Router) { }
 
@@ -75,6 +76,7 @@ export class ListProductsComponent implements OnInit {
       endIndex = this.length;
     }
     this.pagedList = this.productsList.slice(startIndex, endIndex);
+    this.gridHeight = (event.pageSize/4) * 85;
   }
 
   onResize(event) {
