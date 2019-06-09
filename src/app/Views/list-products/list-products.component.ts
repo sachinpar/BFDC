@@ -27,8 +27,8 @@ export class ListProductsComponent implements OnInit {
   breakpoint: number = 4;
   // MatPaginator Inputs
   length: number = 0;
-  pageSize: number = 4;
-  pageSizeOptions: number[] = [4, 8, 12];
+  pageSize: number = 32;
+  pageSizeOptions: number[] = [8, 16, 32];
   cartProducts: CartProduct[] = [];
   tempProducts: CartProduct[] = [];
   
@@ -48,8 +48,10 @@ export class ListProductsComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.GetSizes();
       }
-      this.pagedList = this.productsList.slice(0, 4);
+      this.pagedList = this.productsList.slice(0, this.pageSize);
       this.length = this.productsList.length;
+      let multiplier = ((this.pageSize/4) > Math.ceil(this.pagedList.length/4)) ? Math.ceil(this.pagedList.length/4) : (this.pageSize/4);
+      this.gridHeight = multiplier * 85;
     });
 
     let tempProduct: CartProduct = {
@@ -78,7 +80,8 @@ export class ListProductsComponent implements OnInit {
       endIndex = this.length;
     }
     this.pagedList = this.productsList.slice(startIndex, endIndex);
-    this.gridHeight = (event.pageSize/4) * 85;
+    let multiplier = ((event.pageSize/4) > Math.ceil(this.pagedList.length/4)) ? Math.ceil(this.pagedList.length/4) : (event.pageSize/4);
+    this.gridHeight = multiplier * 85;
   }
 
   onResize(event) {

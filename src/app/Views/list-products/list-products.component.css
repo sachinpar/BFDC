@@ -67,4 +67,5 @@ table {
 .productImg{
   height: 35vh;
   object-fit: cover;
+  cursor: pointer;
 }

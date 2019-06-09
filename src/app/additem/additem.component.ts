@@ -71,18 +71,6 @@ export class AdditemComponent implements OnInit {
       quantity_left: this.quantity.value,
       sizes: this.sizes
     };
-    // this.productService.AddProduct(this.product).subscribe((response) => {
-    //   this.showSpinner = false;
-    //   if(response.status == 200)
-    //   {
-    //     this.openSnackBar("Product added", "Close");
-    //     this.router.navigateByUrl('home');
-    //   }
-    //   else
-    //   {
-    //     this.openSnackBar(response.message, "Close");
-    //   }
-    // });
     this.uploadService.UploadFile(this.imageFile).subscribe((uploadResponse) => {
       if(uploadResponse.image_url != null){
         this.product.image_url = uploadResponse.image_url;
@@ -99,6 +87,39 @@ export class AdditemComponent implements OnInit {
           }
         });
       }
+    });
+  }
+
+  UpdateProduct(){
+    if(this.sizes == null || this.sizes.length <= 0){
+      this.noSizes = true;
+      return;
+    }
+    this.showSpinner = true;
+    this.product = {
+      _id: 0,
+      name: this.name,
+      color: this.color,
+      price: this.price,
+      rent: this.rent,
+      image_name: this.imageName,
+      image_url: this.editedProduct.image_url,
+      quantity_left: this.quantity.value,
+      sizes: this.sizes
+    };
+    this.productService.DeleteProduct(this.editedProduct._id).subscribe(res => {
+      this.productService.AddProduct(this.product).subscribe((response) => {
+        this.showSpinner = false;
+        if(response.status == 200)
+        {
+          this.openSnackBar("Product added", "Close");
+          this.router.navigateByUrl('home');
+        }
+        else
+        {
+          this.openSnackBar(response.message, "Close");
+        }
+      });
     });
   }
 
