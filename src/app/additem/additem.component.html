@@ -57,7 +57,8 @@
         </table>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button (click)="AddProduct()">Submit</button>
+        <button mat-button *ngIf="!editMode" (click)="AddProduct()">Save</button>
+        <button mat-button *ngIf="editMode" (click)="AddProduct()">Update</button>
       </mat-card-actions>
     </mat-card>
     <mat-spinner id="loginSpinner"

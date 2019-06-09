@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/Models/Product';
 import { ProductService } from '../Services/product.service';
 import { MatSnackBar } from '@angular/material';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UploadService } from '../Services/upload.service';
 import { Size } from 'src/Models/Size';
 import { FormControl, Validators } from '@angular/forms';
 import { SizeService } from '../Services/size.service';
+import { ProductsListNavService } from '../NavigationServices/products-list-nav.service';
 
 @Component({
   selector: 'app-additem',
@@ -26,11 +27,27 @@ export class AdditemComponent implements OnInit {
   showSpinner: boolean = false;
   sizes: Size[] = [];
   noSizes: boolean = false;
+  editedProduct: Product;
+  editMode: boolean = false;
 
-  constructor(private productService: ProductService, private uploadService: UploadService, public snackBar: MatSnackBar, public router: Router) { }
+  constructor(private productService: ProductService, private uploadService: UploadService, public snackBar: MatSnackBar, public router: Router, private productNavService: ProductsListNavService, private route: ActivatedRoute) {
+   }
 
   ngOnInit() {
     this.imageName = "No file selected";
+    let prodId = this.route.snapshot.queryParamMap.get("id");
+    if(prodId != null){
+      this.productNavService.productNav$.subscribe(product => {
+        this.editMode = true;
+        this.editedProduct = product;
+        this.name = product.name;
+        this.color = product.color;
+        this.price = product.price;
+        this.rent = product.rent;
+        this.imageName = product.image_name;
+        this.sizes = product.sizes;
+      });
+    }
   }
 
   FileSelected(event){

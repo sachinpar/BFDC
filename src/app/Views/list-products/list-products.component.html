@@ -66,7 +66,7 @@
       <mat-card class="example-card" [style.minHeight]="'100%'" [style.minWidth]="'100%'" [style.maxHeight]="'60%'">
         <mat-card-header>
         </mat-card-header>
-        <img class="productImg" mat-card-image [src]="product.image_url" alt="Photo of a Shiba Inu">
+        <img class="productImg" mat-card-image [src]="product.image_url" alt="Photo of a Shiba Inu" (click)="ViewProduct(product._id)">
         <mat-card-content>
           <table>
             <tr>
@@ -74,7 +74,10 @@
                 <mat-card-title style="font-size: 2.5vh">{{product.name}}</mat-card-title>
               </td>
               <td>
-                <img class="editImage" src="../../../assets/images/edit_icon.png" [routerLink]="[{ outlets: {mainOutlet: 'additem'}}]"/>
+                <img class="editImage" src="../../../assets/images/edit_icon.png" (click)="EditProduct(product._id)"/>
+              </td>
+              <td>
+                <img class="deleteImage" src="../../../assets/images/delete_icon.png" (click)="DeleteProduct(product._id)"/>
               </td>
             </tr>
           </table>
@@ -107,7 +110,6 @@
           </table>
         </mat-card-content>
         <mat-card-actions>
-          <img class="deleteImage" src="../../../assets/images/delete_icon.png" (click)="DeleteProduct(product._id)"/>
           <button mat-button (click)="AddToCart()">Add</button>
         </mat-card-actions>
       </mat-card>

@@ -54,13 +54,13 @@ table {
 }
 
 .editImage{
-  height: 1.3vh;
+  height: 2.3vh;
   float: right;
   cursor: pointer;
 }
 
 .deleteImage{
-  height: 5vh;
+  height: 4vh;
   cursor: pointer;
 }
 

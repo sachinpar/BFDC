@@ -6,7 +6,9 @@ import { Size } from 'src/Models/Size';
 import { SizeService } from 'src/app/Services/size.service';
 import { CartService } from 'src/app/Services/cart.service';
 import { CartProduct } from 'src/Models/CartProduct';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { ProductsListNavService } from 'src/app/NavigationServices/products-list-nav.service';
+import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-list-products',
@@ -29,13 +31,13 @@ export class ListProductsComponent implements OnInit {
   pageSizeOptions: number[] = [4, 8, 12];
   cartProducts: CartProduct[] = [];
   tempProducts: CartProduct[] = [];
-
+  
   showSpinner: boolean = true;
   searchText: string = "";
   selectedQuantity: number = 5;
   gridHeight: number = 85;
 
-  constructor(private productService: ProductService, private sizeService: SizeService, private cartService: CartService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private productService: ProductService, private sizeService: SizeService, private cartService: CartService, private router: Router, private productNavService: ProductsListNavService) { }
 
   ngOnInit() {
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 4;
@@ -154,7 +156,19 @@ export class ListProductsComponent implements OnInit {
   }
 
   EditProduct(product_id){
-    this.router.navigate(['/home/additem'], { queryParams: { product_id: product_id } });
+    let product = this.productsList.find(s => s._id == product_id);
+    let sizes = this.sizeList.filter(s => s.product_id == product_id);
+    product.sizes = sizes;
+    this.productNavService.SendProductData(product);
+    this.router.navigate(['../additem'], {relativeTo: this.route, queryParams: {id: product_id}});
+  }
+
+  ViewProduct(product_id){
+    let product = this.productsList.find(s => s._id == product_id);
+    let sizes = this.sizeList.filter(s => s.product_id == product_id);
+    product.sizes = sizes;
+    this.productNavService.SendProductData(product);
+    this.router.navigate(['../listproducts/' + product_id], {relativeTo: this.route});
   }
 
   GetSelectedSizeListForProduct(product_id){

@@ -1,0 +1,12 @@
+<mat-card class="cardProd">
+  <mat-card-content>
+    <img [src]="product.image_url" class="imgProd"/>
+    <div class="divProd">
+      <label class="lblName">{{product.name}}</label><br/>
+      <label class="lblColor">{{product.color}}</label><br/>
+      <div *ngFor="let size of product.sizes" class="divProductSize" [id]="'sizeDiv_' + size.product_id + '_' + size.size" matBadge="{{size.quantity_left}}">
+        <span>{{size.size}}</span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

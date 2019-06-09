@@ -20,6 +20,7 @@ import { ListOrdersComponent } from './Views/list-orders/list-orders.component';
 import { AuthService } from './Services/auth.service';
 import { RequestInterceptor } from './Security/request.interceptor';
 import { ViewCartComponent } from './Views/view-cart/view-cart.component';
+import { ProductComponent } from './Views/product/product.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ViewCartComponent } from './Views/view-cart/view-cart.component';
     BookitemComponent,
     ListProductsComponent,
     ListOrdersComponent,
-    ViewCartComponent
+    ViewCartComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,
